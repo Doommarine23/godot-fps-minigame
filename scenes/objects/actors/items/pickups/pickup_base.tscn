@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://1vk04g1iswem"]
+
+[ext_resource type="Script" path="res://scripts/constructors/pickup_base.gd" id="1_tvgfp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_en5jt"]
+
+[node name="Pickup_Actor" type="Area3D"]
+script = ExtResource("1_tvgfp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_en5jt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="pickup_finish" from="." to="." method="_on_pickup_finish"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=3 format=3 uid="uid://cey8dp1ytn2an"]
+
+[ext_resource type="PackedScene" uid="uid://dd3oln1ucgqpd" path="res://models/blaster-repeater.glb" id="1_3mnrj"]
+[ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_o8b63"]
+
+[resource]
+script = ExtResource("2_o8b63")
+model = ExtResource("1_3mnrj")
+position = Vector3(0, 0, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+sound_pickup = ""
+drop_ammo = false
+drop_weapon = false
+drop_health = true
+ammo_type = "ammo_clip"
+ammo_amount = 0
+weapon_pickup_ammo = 0
+health_amount = 10

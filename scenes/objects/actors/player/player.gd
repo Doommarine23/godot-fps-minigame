@@ -212,3 +212,61 @@ func health_manager(value : int, is_damage : bool):
 	
 	if health < 0:
 		get_tree().reload_current_scene() # Reset when out of health
+
+# Manage Ammo
+func calculate_ammo(ammo_id, ammo_amount):
+	if ammo_types.has(ammo_id):
+		ammo_types[ammo_id] += ammo_amount
+		
+	if ammo_types[ammo_id] < 0:
+		ammo_types[ammo_id] = 0
+		
+	if ammo_types[ammo_id] > ammo_types_max[ammo_id]:
+		ammo_types[ammo_id] = ammo_types_max[ammo_id]
+	
+	#If our current weapon happens to use null ammo, avoid updating HUD until next time.
+	if container.weapon.ammo_type != "ammo_null": 
+		ammo_updated.emit(ammo_types.get(container.weapon.ammo_type))
+	print( "Ammo is now: " + str( ammo_types.get(ammo_id) ) )
+
+# Detect item pickups and act accordingly
+func _on_pickup_detected(pickup_actor, pickup_data):
+	#Syntactic Sugar
+	var is_ammo : bool = pickup_data.drop_ammo
+	var is_weapon : bool = pickup_data.drop_weapon
+	var is_health : bool = pickup_data.drop_health
+	
+	#If the player can't obtain anything useful from this pickup item, deny it.
+	var accepted_pickup : bool = false
+	
+	if is_ammo:
+		#TODO: Don't give ammo if full.
+		if self.ammo_types.get(pickup_data.ammo_type) < self.ammo_types_max.get(pickup_data.ammo_type):
+			calculate_ammo(pickup_data.ammo_type, pickup_data.ammo_amount)
+			accepted_pickup = true
+			
+	if is_health:
+		if health < max_health:
+			health += pickup_data.health_amount
+			health_updated.emit(health) #TODO: Replace with manager later
+			accepted_pickup = true
+			
+	if is_weapon:
+		if container.weapons.has(pickup_data.weapon_id): #If we already own this weapon
+			#If we have less than maximum ammo, of the ammo type defined for this pickup's ammo type.
+				if self.ammo_types.get(pickup_data.ammo_type) < ammo_types_max.get(pickup_data.weapon_id.ammo_type):
+					calculate_ammo(pickup_data.ammo_type, pickup_data.weapon_pickup_ammo)
+					accepted_pickup = true
+				else:
+					print("YOU GET NOTHING. GOOD DAY SIR.")
+					
+		else: #All good to give weapon pickup proper
+			container.weapons.append(pickup_data.weapon_id)
+			#TODO: Change weapon to new pickup ID. Need to get its position in the weapon array.
+			#initiate_change_weapon(pickup_data.weapon_id)
+			accepted_pickup = true
+			print("gave weapon with ID of: " + str(pickup_data.weapon_id))
+			
+	if accepted_pickup:
+		pickup_actor.emit_signal("pickup_finish")
+		Audio.play(pickup_data.sound_pickup)

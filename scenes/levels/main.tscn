@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxvvlck8lej3f"]
+[gd_scene load_steps=14 format=3 uid="uid://dxvvlck8lej3f"]
 
 [ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/levels/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://scenes/objects/actors/player/player.tscn" id="2_elriq"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://bvx5cvigosg0s" path="res://scenes/objects/actors/props/platform_large_grass.tscn" id="7_wggef"]
 [ext_resource type="PackedScene" uid="uid://d2g78tpqbyf5g" path="res://scenes/objects/actors/mobs/enemy.tscn" id="8_7ty2f"]
 [ext_resource type="PackedScene" uid="uid://oqfhfp1a80qd" path="res://scenes/objects/actors/props/cloud.tscn" id="10_5ksau"]
+[ext_resource type="PackedScene" uid="uid://1vk04g1iswem" path="res://scenes/objects/actors/items/pickups/pickup_base.tscn" id="11_8k62g"]
+[ext_resource type="Resource" uid="uid://cey8dp1ytn2an" path="res://resources/actors/items/pickups/pickup_health.tres" id="12_s3cf1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fpmwk"]
 font = ExtResource("3_w27de")
@@ -159,5 +161,9 @@ transform = Transform3D(1.73205, 0, 1, 0, 2, 0, -1, 0, 1.73205, -30.1261, 2.4268
 
 [node name="cube4" parent="Decoration" instance=ExtResource("10_5ksau")]
 transform = Transform3D(1.12202, 1.39419, -2.40776, 1.53922, 1.85165, 1.78946, 2.31773, -1.90463, -0.0227883, -0.881504, 13.0297, -30.1859)
+
+[node name="Pickup_Actor" parent="." instance=ExtResource("11_8k62g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.873132, 0.229144, 1.37881)
+pickup_data = ExtResource("12_s3cf1")
 
 [connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]

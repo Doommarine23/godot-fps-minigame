@@ -36,6 +36,10 @@ movie_writer/movie_file="D:/Godot/test.avi"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[global_group]
+
+player=""
+
 [input]
 
 move_right={
