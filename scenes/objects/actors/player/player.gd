@@ -277,7 +277,7 @@ func action_weapon_toggle():
 		weapon_index = wrap(weapon_index - 1, 0, weapons.size())
 		initiate_change_weapon(weapon_index)
 		
-		Audio.play("sounds/weapon_change.ogg")
+		Audio.play("sounds/actors/player/weapons/weapon_change.ogg")
 
 # Initiates the weapon changing animation (tween)
 
