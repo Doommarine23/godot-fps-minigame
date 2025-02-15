@@ -47,11 +47,19 @@ grow_vertical = 2
 scale = Vector2(0.35, 0.35)
 pivot_offset = Vector2(64, 64)
 
-[node name="Health" type="Label" parent="HUD"]
-offset_left = 48.0
-offset_top = 627.0
-offset_right = 138.0
-offset_bottom = 672.0
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 66.0
+offset_top = -86.0
+offset_right = 155.0
+offset_bottom = -44.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+
+[node name="Health" type="Label" parent="HUD/HBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "100%"

@@ -23,10 +23,11 @@ var mouse_sensitivity = 700
 var input_mouse: Vector2
 var gamepad_sensitivity:float = 0.075
 
+var default_fov:float = 80.0
 
 var previously_floored:bool = false
 var jump_single:bool = true
-var jump_double:bool = true
+var jump_double:bool = false
 #endregion
 
 #region Player Ammo Pools
@@ -161,13 +162,21 @@ func handle_controls(_delta):
 	
 	if Input.is_action_just_pressed("jump"):
 		
-		if jump_single or jump_double:#TODO: a nicer defined set of sounds later.
-			Audio.play("sounds/actors/player/movement/jump_a.ogg, sounds/actors/player/movement/jump_a.ogg, sounds/actors/player/movement/jump_a.ogg")
+		#preferable over a long horizontal line.
+		#TODO: should be defined elsewhere with all player sounds but do that later
+		var jump_sound = [
+		"sounds/actors/player/movement/jump_a.ogg", 
+		"sounds/actors/player/movement/jump_b.ogg", 
+		"sounds/actors/player/movement/jump_c.ogg"
+		]
 		
-		if jump_double:
+		if jump_single or jump_double:
+			Audio.play(jump_sound.pick_random())
 			
-			gravity = -jump_strength
-			jump_double = false
+		#if jump_double:
+			#
+			#gravity = -jump_strength
+			#jump_double = false
 			
 		if(jump_single): action_jump()
 
@@ -187,7 +196,7 @@ func action_jump():
 	gravity = -jump_strength
 	
 	jump_single = false;
-	jump_double = true;
+	#jump_double = true;
 
 # Add or Remove Health from Actor
 func health_manager(value : int, is_damage : bool):

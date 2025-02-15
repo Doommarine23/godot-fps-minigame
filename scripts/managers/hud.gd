@@ -2,4 +2,4 @@ extends CanvasLayer
 
 
 func _on_health_updated(health):
-	$Health.text = str(health) + "%"
+	$HBoxContainer/Health.text = str(health) + "%"

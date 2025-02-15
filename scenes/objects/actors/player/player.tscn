@@ -62,23 +62,21 @@ sprite_frames = ExtResource("4_m6ukc")
 frame = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem/CenterContainer"]
 layout_mode = 2
+size_flags_stretch_ratio = 1.05
 texture = ExtResource("8_m723x")
 stretch_mode = 3
 
