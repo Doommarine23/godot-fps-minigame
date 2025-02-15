@@ -8,8 +8,8 @@
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="4_m6ukc"]
 [ext_resource type="Resource" uid="uid://dvkwuko88f10" path="res://resources/player/weapons/blaster-sniper.tres" id="5_awtw4"]
 [ext_resource type="Script" path="res://scripts/managers/weapon_manager.gd" id="6_450qp"]
+[ext_resource type="Texture2D" uid="uid://ce3lgq7foiusl" path="res://sprites/crosshair-repeater.png" id="7_ovgk6"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/actors/player/movement/walking.ogg" id="8_0iptv"]
-[ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="8_m723x"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
@@ -55,32 +55,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -1, -2.25)
 script = ExtResource("6_450qp")
 weapons = Array[ExtResource("2_ym3mk")]([ExtResource("2_6epbw"), ExtResource("5_awtw4"), ExtResource("3_kr4p8")])
 
+[node name="TextureRect" type="TextureRect" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem/Container"]
+offset_right = 128.0
+offset_bottom = 128.0
+texture = ExtResource("7_ovgk6")
+
 [node name="Muzzle" type="AnimatedSprite3D" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -0.75, -6)
 layers = 2
 sprite_frames = ExtResource("4_m6ukc")
 frame = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="TextureRect" type="TextureRect" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("8_m723x")
-stretch_mode = 3
 
 [node name="RayCast" type="RayCast3D" parent="Head/Camera"]
 exclude_parent = false

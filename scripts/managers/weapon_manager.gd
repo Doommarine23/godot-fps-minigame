@@ -10,8 +10,8 @@ extends Node
 @onready var raycast = $"../../../../RayCast"
 @onready var muzzle = $"../Muzzle"
 @onready var camera = $"../../../.."
+@onready var crosshair: TextureRect = $"../CenterContainer/TextureRect"
 
-@export var crosshair:TextureRect
 
 var tween:Tween
 
@@ -148,4 +148,4 @@ func change_weapon():
 	# Set weapon data
 	
 	raycast.target_position = Vector3(0, 0, -1) * weapon.max_distance
-	#crosshair.texture = weapon.crosshair FIX!!
+	crosshair.texture = weapon.crosshair
