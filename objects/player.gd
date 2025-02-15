@@ -1,3 +1,4 @@
+#TODO: Type all variables. Better sanity / safety and slightly better performance.
 extends CharacterBody3D
 
 @export_subgroup("Properties")
@@ -6,6 +7,28 @@ extends CharacterBody3D
 
 @export_subgroup("Weapons")
 @export var weapons: Array[Weapon] = []
+
+#AMMO POOLS
+#TODO: Once supported, made into INT typed.
+var ammo_types: Dictionary = {
+	"ammo_null" : 0, #Melee and the like.
+	"ammo_clip" : 50,
+	"ammo_shell" : 5
+}
+
+var ammo_types_max: Dictionary = {
+	"ammo_null_max" : 0, #Do I really even need this? Just adding it for completeness.
+	"ammo_clip_max" : 100,
+	"ammo_shell_max" : 20
+}
+
+#Perhaps there is a more clever way of doing ammo, perhaps as a multi-dimensional array, to store current, max, and icons.
+#TODO: Do these need to be preload?
+var ammo_icons: Dictionary = {
+	"ammo_null" : "null",
+	"ammo_clip" : "null",#preload("bullets.tga"),
+	"ammo_shell" : "null",#preload("bullets.tga"),
+}
 
 var weapon: Weapon
 var weapon_index := 0
@@ -287,9 +310,16 @@ func change_weapon():
 	raycast.target_position = Vector3(0, 0, -1) * weapon.max_distance
 	crosshair.texture = weapon.crosshair
 
-func damage(amount):
+##Add or Remove Health from Actor
+func health_manager(value : int, is_damage : bool):
+	#Could I somehow do this on the input field? Either way, ensure health value is always a positive.
+	abs(value)
 	
-	health -= amount
+	if is_damage:
+		health -= value
+	else:
+		health += value
+	
 	health_updated.emit(health) # Update health on HUD
 	
 	if health < 0:

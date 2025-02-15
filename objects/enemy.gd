@@ -51,7 +51,8 @@ func _on_timer_timeout():
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 
-		if collider.has_method("damage"):  # Raycast collides with player
+			#TODO: better way of doing this?
+		if collider.has_method("health_manager"):  # Raycast collides with player
 			
 			# Play muzzle flash animation(s)
 
@@ -64,5 +65,6 @@ func _on_timer_timeout():
 			muzzle_b.rotation_degrees.z = randf_range(-45, 45)
 
 			Audio.play("sounds/enemy_attack.ogg")
-
-			collider.damage(5)  # Apply damage to player
+			
+			#TODO: Signal instead?
+			collider.health_manager(5, true)  # Apply damage to player
