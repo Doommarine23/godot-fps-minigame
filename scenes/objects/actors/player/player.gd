@@ -60,6 +60,9 @@ signal health_updated
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+func _process(delta):
+	handle_mouse_controls(delta)
+
 func _physics_process(delta):
 	
 	# Handle functions
@@ -124,8 +127,8 @@ func _input(event):
 		rotation_target.y -= event.relative.x / mouse_sensitivity
 		rotation_target.x -= event.relative.y / mouse_sensitivity
 
-func handle_controls(_delta):
-	
+func handle_mouse_controls(delta):
+		
 	# Mouse capture
 	
 	if Input.is_action_just_pressed("mouse_capture"):
@@ -137,7 +140,7 @@ func handle_controls(_delta):
 		mouse_captured = false
 		
 		input_mouse = Vector2.ZERO
-	
+func handle_controls(_delta):
 	# Movement
 	
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
