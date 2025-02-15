@@ -1,12 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=7 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scenes/objects/actors/player/player.gd" id="1_ffboj"]
-[ext_resource type="Resource" uid="uid://cu2gtxlcmbb34" path="res://resources/player/weapons/blaster-repeater.tres" id="2_6epbw"]
 [ext_resource type="Texture2D" uid="uid://8ggihh27mlrr" path="res://sprites/blob_shadow.png" id="2_b0fo8"]
-[ext_resource type="Script" path="res://scripts/templates/weapon.gd" id="2_ym3mk"]
-[ext_resource type="Resource" uid="uid://c56y8pqoyk15f" path="res://resources/player/weapons/blaster.tres" id="3_kr4p8"]
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="4_m6ukc"]
-[ext_resource type="Resource" uid="uid://dvkwuko88f10" path="res://resources/player/weapons/blaster-sniper.tres" id="5_awtw4"]
 [ext_resource type="Script" path="res://scripts/managers/weapon_manager.gd" id="6_450qp"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/actors/player/movement/walking.ogg" id="8_0iptv"]
 
@@ -52,7 +48,7 @@ fov = 40.0
 [node name="Container" type="Node3D" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -1, -2.25)
 script = ExtResource("6_450qp")
-weapons = Array[ExtResource("2_ym3mk")]([ExtResource("2_6epbw"), ExtResource("5_awtw4"), ExtResource("3_kr4p8")])
+weapons = null
 
 [node name="Muzzle" type="AnimatedSprite3D" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -0.75, -6)
