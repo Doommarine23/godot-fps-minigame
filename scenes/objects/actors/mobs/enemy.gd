@@ -28,7 +28,7 @@ func _process(delta):
 # Take damage from player
 
 func damage(amount):
-	Audio.play("sounds/enemy_hurt.ogg")
+	Audio.play("sounds/actors/mobs/enemy_hurt.ogg")
 
 	health -= amount
 
@@ -38,7 +38,7 @@ func damage(amount):
 # Destroy the enemy when out of health
 
 func destroy():
-	Audio.play("sounds/enemy_destroy.ogg")
+	Audio.play("sounds/actors/mobs/enemy_destroy.ogg")
 
 	destroyed = true
 	queue_free()
@@ -64,7 +64,7 @@ func _on_timer_timeout():
 			muzzle_b.play("default")
 			muzzle_b.rotation_degrees.z = randf_range(-45, 45)
 
-			Audio.play("sounds/enemy_attack.ogg")
+			Audio.play("sounds/actors/mobs/enemy_attack.ogg")
 			
 			#TODO: Signal instead?
 			collider.health_manager(5, true)  # Apply damage to player

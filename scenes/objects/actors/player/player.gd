@@ -72,7 +72,7 @@ func _ready():
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-	weapon = weapons[weapon_index] # Weapon must never be nil
+	weapon = weapons[weapon_index] # Weapon must never be nil TODO: Add a "no weapons" weapon ala Halo.
 	initiate_change_weapon(weapon_index)
 
 func _physics_process(delta):
@@ -115,8 +115,9 @@ func _physics_process(delta):
 	
 	camera.position.y = lerp(camera.position.y, 0.0, delta * 5)
 	
+	#TODO: Velocity minimum for landing sound.
 	if is_on_floor() and gravity > 1 and !previously_floored: # Landed
-		Audio.play("sounds/land.ogg")
+		Audio.play("sounds/actors/player/movement/land.ogg")
 		camera.position.y = -0.1
 	
 	previously_floored = is_on_floor()
@@ -171,8 +172,8 @@ func handle_controls(_delta):
 	
 	if Input.is_action_just_pressed("jump"):
 		
-		if jump_single or jump_double:
-			Audio.play("sounds/jump_a.ogg, sounds/jump_b.ogg, sounds/jump_c.ogg")
+		if jump_single or jump_double:#TODO: a nicer defined set of sounds later.
+			Audio.play("sounds/actors/player/movement/jump_a.ogg, sounds/actors/player/movement/jump_a.ogg, sounds/actors/player/movement/jump_a.ogg")
 		
 		if jump_double:
 			
@@ -205,7 +206,7 @@ func action_jump():
 	jump_single = false;
 	jump_double = true;
 
-# Shooting
+# Shooting TODO: Split into a weapon manager script on the Container node.
 
 func action_shoot():
 	
@@ -249,7 +250,7 @@ func action_shoot():
 			
 			# Creating an impact animation
 			
-			var impact = preload("res://objects/impact.tscn")
+			var impact = preload("res://scenes/objects/actors/fx/impact.tscn")
 			var impact_instance = impact.instantiate()
 			
 			impact_instance.play("shot")
@@ -261,11 +262,19 @@ func action_shoot():
 
 # Toggle between available weapons (listed in 'weapons')
 
+#TODO: Probably replace with an addon for a weapon wheel or something better.
 func action_weapon_toggle():
 	
 	if Input.is_action_just_pressed("weapon_toggle"):
 		
 		weapon_index = wrap(weapon_index + 1, 0, weapons.size())
+		initiate_change_weapon(weapon_index)
+		
+		Audio.play("sounds/actors/player/weapons/weapon_change.ogg")
+	
+	if Input.is_action_just_pressed("weapon_toggle_back"):
+		
+		weapon_index = wrap(weapon_index - 1, 0, weapons.size())
 		initiate_change_weapon(weapon_index)
 		
 		Audio.play("sounds/weapon_change.ogg")
