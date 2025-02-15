@@ -1,13 +1,35 @@
 #TODO: Type all variables. Better sanity / safety and slightly better performance.
 extends CharacterBody3D
 
+#region Node References
+@onready var camera = $Head/Camera
+@onready var container = $Head/Camera/SubViewportContainer/SubViewport/CameraItem/Container
+@onready var sound_footsteps = $SoundFootsteps
+#endregion
+
+#region Variables
 @export_subgroup("Properties")
 @export var movement_speed = 5
 @export var jump_strength = 8
+@export var max_health:int = 100
+
+var health:int = 100
+var gravity:float = 0.0
+var movement_velocity: Vector3
+var rotation_target: Vector3
+
+var mouse_captured:bool = true
+var mouse_sensitivity = 700
+var input_mouse: Vector2
+var gamepad_sensitivity:float = 0.075
 
 
+var previously_floored:bool = false
+var jump_single:bool = true
+var jump_double:bool = true
+#endregion
 
-#AMMO POOLS
+#region Player Ammo Pools
 #TODO: Once supported, made into INT typed.
 #TODO: new manager node?
 var ammo_types: Dictionary = {
@@ -29,33 +51,15 @@ var ammo_icons: Dictionary = {
 	"ammo_clip" : "null",#preload("bullets.tga"),
 	"ammo_shell" : "null",#preload("bullets.tga"),
 }
+#endregion
 
-var mouse_sensitivity = 700
-var gamepad_sensitivity := 0.075
-
-var mouse_captured := true
-
-var movement_velocity: Vector3
-var rotation_target: Vector3
-
-var input_mouse: Vector2
-
-var health:int = 100
-var gravity := 0.0
-
-var previously_floored := false
-
-var jump_single := true
-var jump_double := true
-
+#region Signals
+signal pickup_detected
+signal ammo_updated
 signal health_updated
+#endregion
 
-@onready var camera = $Head/Camera
-
-@onready var container = $Head/Camera/SubViewportContainer/SubViewport/CameraItem/Container
-@onready var sound_footsteps = $SoundFootsteps
-
-# Functions
+# FUNCTIONS
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -85,11 +89,11 @@ func _physics_process(delta):
 	# Rotation
 	
 	camera.rotation.z = lerp_angle(camera.rotation.z, -input_mouse.x * 25 * delta, delta * 5)	
-	
 	camera.rotation.x = lerp_angle(camera.rotation.x, rotation_target.x, delta * 25)
+	
 	rotation.y = lerp_angle(rotation.y, rotation_target.y, delta * 25)
 	
-	#Weapon  Container Rotation
+	#Weapon Container Rotation
 	
 	container.position = lerp(container.position, container.container_offset - (basis.inverse() * applied_velocity / 30), delta * 10)
 	
@@ -117,8 +121,6 @@ func _physics_process(delta):
 	if position.y < -10:
 		get_tree().reload_current_scene()
 
-# Mouse movement
-
 func _input(event):
 	if event is InputEventMouseMotion and mouse_captured:
 		
@@ -127,10 +129,9 @@ func _input(event):
 		rotation_target.y -= event.relative.x / mouse_sensitivity
 		rotation_target.x -= event.relative.y / mouse_sensitivity
 
+# Handle Mouse Control
 func handle_mouse_controls(delta):
-		
-	# Mouse capture
-	
+	# Mouse Capture
 	if Input.is_action_just_pressed("mouse_capture"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		mouse_captured = true
@@ -140,15 +141,15 @@ func handle_mouse_controls(delta):
 		mouse_captured = false
 		
 		input_mouse = Vector2.ZERO
+
+# Handle All Other Controls
 func handle_controls(_delta):
 	# Movement
-	
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
 	movement_velocity = Vector3(input.x, 0, input.y).normalized() * movement_speed
 	
 	# Rotation
-	
 	var rotation_input := Input.get_vector("camera_right", "camera_left", "camera_down", "camera_up")
 	
 	rotation_target -= Vector3(-rotation_input.y, -rotation_input.x, 0).limit_length(1.0) * gamepad_sensitivity
@@ -170,9 +171,7 @@ func handle_controls(_delta):
 			
 		if(jump_single): action_jump()
 
-
 # Handle gravity
-
 func handle_gravity(delta):
 	
 	gravity += 20 * delta
@@ -183,7 +182,6 @@ func handle_gravity(delta):
 		gravity = 0
 
 # Jumping
-
 func action_jump():
 	
 	gravity = -jump_strength
@@ -191,7 +189,7 @@ func action_jump():
 	jump_single = false;
 	jump_double = true;
 
-##Add or Remove Health from Actor
+# Add or Remove Health from Actor
 func health_manager(value : int, is_damage : bool):
 	#Could I somehow do this on the input field? Either way, ensure health value is always a positive.
 	abs(value)
