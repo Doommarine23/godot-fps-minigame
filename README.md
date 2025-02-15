@@ -19,7 +19,7 @@ Godot Jolt is MIT.
 Project is MIT. I really don't care what you do, just credit and show me your cool stuff.
 
 # WHY SO MANY CREDITS, EVEN YOUTUBE VIDEOS?
-We stand on the shoulders of giants.
+We stand on the shoulders of giants who came before us.
 
 # SPECIAL THANKS / CREDITS
 
@@ -47,3 +47,8 @@ Authors: Mikael Hermansson (mihe), Jorrit Rouwe (jrouwe), Aurélien (opsocket), 
 Title: Godot Jolt
 Link:  https://github.com/godot-jolt/godot-jolt
 Usage: Jolt Physics engine for Godot. Mandatory for Stair-stepping
+
+Author: V (kelo221)
+Title: Fix shot Accuracy #13 (Starter Kit FPS Pull Request)
+Link: https://github.com/KenneyNL/Starter-Kit-FPS/pull/13
+Usage: Small moving of code logic that fixes an issue impacting weapon accuracy.
