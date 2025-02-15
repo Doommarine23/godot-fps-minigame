@@ -2,6 +2,8 @@ extends Resource
 class_name Pickup
 
 @export_subgroup("Model & Sound")
+@export var name: String = "Item" #Meant for player in-game
+@export var name_editor: String = "Pickup_" #Meant for the editor
 @export var model: PackedScene
 @export var position: Vector3
 @export var rotation: Vector3

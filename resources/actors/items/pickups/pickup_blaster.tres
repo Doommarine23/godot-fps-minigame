@@ -1,15 +1,17 @@
 [gd_resource type="Resource" script_class="Pickup" load_steps=4 format=3 uid="uid://rkgv7qvc52ad"]
 
-[ext_resource type="PackedScene" uid="uid://b2p7bbkuxf7m" path="res://models/blaster.glb" id="1_pemye"]
+[ext_resource type="PackedScene" uid="uid://g2w2608bc2dy" path="res://models/cloud.glb" id="1_dlxr5"]
 [ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_3c8aq"]
 [ext_resource type="Resource" uid="uid://dvkwuko88f10" path="res://resources/actors/player/weapons/blaster-sniper.tres" id="3_6u4vn"]
 
 [resource]
 script = ExtResource("2_3c8aq")
-model = ExtResource("1_pemye")
+name = "Item"
+name_editor = "Pickup_Blaster_Sniper"
+model = ExtResource("1_dlxr5")
 position = Vector3(0, 0, 0)
 rotation = Vector3(0, 0, 0)
-scale = Vector3(1, 1, 1)
+scale = Vector3(0.5, 0.5, 0.5)
 sound_pickup = ""
 drop_ammo = false
 drop_weapon = true

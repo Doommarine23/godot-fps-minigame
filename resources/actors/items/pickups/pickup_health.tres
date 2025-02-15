@@ -5,10 +5,12 @@
 
 [resource]
 script = ExtResource("2_o8b63")
+name = "Item"
+name_editor = "Pickup_Health"
 model = ExtResource("1_3mnrj")
 position = Vector3(0, 0, 0)
 rotation = Vector3(0, 0, 0)
-scale = Vector3(1, 1, 1)
+scale = Vector3(0.5, 0.5, 0.5)
 sound_pickup = ""
 drop_ammo = false
 drop_weapon = false

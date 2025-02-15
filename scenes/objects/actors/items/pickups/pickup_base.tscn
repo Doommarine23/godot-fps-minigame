@@ -1,11 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://1vk04g1iswem"]
+[gd_scene load_steps=5 format=3 uid="uid://1vk04g1iswem"]
 
 [ext_resource type="Script" path="res://scripts/constructors/pickup_base.gd" id="1_tvgfp"]
+[ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_fp8ga"]
+
+[sub_resource type="Resource" id="Resource_r4lqp"]
+script = ExtResource("2_fp8ga")
+name = "Item"
+name_editor = "Pickup_"
+position = Vector3(0, 0, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0, 0, 0)
+sound_pickup = ""
+drop_ammo = false
+drop_weapon = false
+drop_health = false
+ammo_type = "ammo_clip"
+ammo_amount = 0
+weapon_pickup_ammo = 0
+health_amount = 0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_en5jt"]
 
-[node name="Pickup_Actor" type="Area3D"]
+[node name="Pickup_" type="Area3D"]
 script = ExtResource("1_tvgfp")
+pickup_data = SubResource("Resource_r4lqp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_en5jt")
