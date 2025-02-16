@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dxvvlck8lej3f"]
+[gd_scene load_steps=16 format=3 uid="uid://dxvvlck8lej3f"]
 
 [ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/levels/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://scenes/objects/actors/player/player.tscn" id="2_elriq"]
@@ -12,7 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://oqfhfp1a80qd" path="res://scenes/objects/actors/props/cloud.tscn" id="10_5ksau"]
 [ext_resource type="PackedScene" uid="uid://1vk04g1iswem" path="res://scenes/objects/actors/items/pickups/pickup_base.tscn" id="11_8k62g"]
 [ext_resource type="Resource" uid="uid://cey8dp1ytn2an" path="res://resources/actors/items/pickups/pickup_health.tres" id="12_s3cf1"]
-[ext_resource type="Resource" uid="uid://rkgv7qvc52ad" path="res://resources/actors/items/pickups/pickup_blaster.tres" id="13_lc2tl"]
+[ext_resource type="Resource" uid="uid://rkgv7qvc52ad" path="res://resources/actors/items/pickups/pickup_blaster_sniper.tres" id="13_lc2tl"]
+[ext_resource type="Resource" uid="uid://l7e10lcvgoci" path="res://resources/actors/items/pickups/pickup_blaster_rocket.tres" id="14_188md"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fpmwk"]
 font = ExtResource("3_w27de")
@@ -164,11 +165,15 @@ transform = Transform3D(1.73205, 0, 1, 0, 2, 0, -1, 0, 1.73205, -30.1261, 2.4268
 transform = Transform3D(1.12202, 1.39419, -2.40776, 1.53922, 1.85165, 1.78946, 2.31773, -1.90463, -0.0227883, -0.881504, 13.0297, -30.1859)
 
 [node name="Pickup_Blaster_Sniper" parent="." instance=ExtResource("11_8k62g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.26239, 0.482962, 0.585445)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.64586, 0.482962, -1.66972)
 pickup_data = ExtResource("13_lc2tl")
 
 [node name="Pickup_Health" parent="." instance=ExtResource("11_8k62g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.13555, 0.482962, -1.1817)
 pickup_data = ExtResource("12_s3cf1")
+
+[node name="Pickup_Blaster_Rocket" parent="." instance=ExtResource("11_8k62g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77808, 1.53465, 4.19683)
+pickup_data = ExtResource("14_188md")
 
 [connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]

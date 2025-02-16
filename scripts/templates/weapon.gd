@@ -8,6 +8,7 @@ class_name Weapon
 @export var muzzle_position: Vector3  # On-screen position of muzzle flash
 
 @export_subgroup("General Properties")
+@export var projectile_type: String #If we're hitscan or a projectile.
 @export var has_secondary_attack: bool # If has secondary fire
 @export_range(25, 70) var scope_fov: float = 65
 @export var sound_shoot: String  # Sound path

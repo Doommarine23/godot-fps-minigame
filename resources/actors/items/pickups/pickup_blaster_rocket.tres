@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=4 format=3 uid="uid://l7e10lcvgoci"]
+
+[ext_resource type="PackedScene" uid="uid://cmbe5k43v3ai6" path="res://models/blasterO.glb" id="1_wxt8r"]
+[ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_qxdir"]
+[ext_resource type="Resource" uid="uid://dfb7jqvr7glto" path="res://resources/actors/player/weapons/blaster_rocket.tres" id="3_nfck4"]
+
+[resource]
+script = ExtResource("2_qxdir")
+name = "Item"
+name_editor = "Pickup_Blaster_Rocket"
+model = ExtResource("1_wxt8r")
+position = Vector3(0, 0, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.5, 0.5, 0.5)
+sound_pickup = "sounds/actors/player/weapons/weapon_change.ogg"
+drop_ammo = false
+drop_weapon = true
+drop_health = false
+ammo_type = "ammo_clip"
+ammo_amount = 0
+weapon_id = ExtResource("3_nfck4")
+weapon_pickup_ammo = 0
+health_amount = 0

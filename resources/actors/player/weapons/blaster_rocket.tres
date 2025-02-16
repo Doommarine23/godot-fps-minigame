@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://dfb7jqvr7glto"]
+
+[ext_resource type="Texture2D" uid="uid://ce3lgq7foiusl" path="res://sprites/crosshair-repeater.png" id="1_4on3l"]
+[ext_resource type="Texture2D" uid="uid://cpxour8a7ihec" path="res://icon.png" id="2_p3gv1"]
+[ext_resource type="PackedScene" uid="uid://cmbe5k43v3ai6" path="res://models/blasterO.glb" id="3_xhtcc"]
+[ext_resource type="Script" path="res://scripts/templates/weapon.gd" id="4_3a46u"]
+
+[resource]
+script = ExtResource("4_3a46u")
+model = ExtResource("3_xhtcc")
+position = Vector3(0, 0, 0)
+rotation = Vector3(0, 180, 0)
+muzzle_position = Vector3(0.1, -0.4, 1.5)
+has_secondary_attack = true
+scope_fov = 65.0
+sound_shoot = "sounds/actors/player/weapons/blaster_repeater.ogg"
+sound_shoot_secondary = "sounds/actors/player/weapons/blaster_repeater.ogg"
+crosshair = ExtResource("1_4on3l")
+inventory_icon = ExtResource("2_p3gv1")
+cooldown = 0.5
+max_distance = 20
+damage = 25.0
+spread = 0.2
+shot_count = 1
+knockback = 7
+cooldown_secondary = 1.0
+max_distance_secondary = 20
+damage_secondary = 20.0
+spread_secondary = 1.0
+shot_count_secondary = 4
+knockback_secondary = 20
