@@ -64,3 +64,8 @@ Author: V (kelo221)
 Title: Fix shot Accuracy #13 (Starter Kit FPS Pull Request)
 Link: https://github.com/KenneyNL/Starter-Kit-FPS/pull/13
 Usage: Small moving of code logic that fixes an issue impacting weapon accuracy.
+
+Author: athousandships (Post on thread by danndamann)
+Title: How to make RigidBody3D move forwards based on it’s orientation?
+Link: https://forum.godotengine.org/t/how-to-make-rigidbody3d-move-forwards-based-on-its-orientation/65449
+Usage: Transform math for 3D projectile direction. Thank you athous, and thank you dannd for asking!

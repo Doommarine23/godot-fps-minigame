@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://7l58ujb2sful"]
+
+[ext_resource type="Script" path="res://scenes/objects/actors/projectiles/proj_base.gd" id="1_8lvpw"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_osq4w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2yr4"]
+albedo_color = Color(0.829568, 0.631142, 2.31028e-06, 1)
+emission = Color(0.408329, 0.408329, 0.408329, 1)
+emission_energy_multiplier = 0.63
+rim_enabled = true
+backlight_enabled = true
+backlight = Color(0.99996, 0.599962, 0.540429, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rakt7"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="RigidBody3D" type="RigidBody3D" groups=["projectiles"]]
+collision_layer = 8
+collision_mask = 5
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_8lvpw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-08, -0.25, 0, 0.25, -1.09278e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_osq4w")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_i2yr4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_rakt7")
+
+[node name="Life" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="timeout" from="Life" to="." method="_on_life_timeout"]

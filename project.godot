@@ -39,6 +39,10 @@ version_control/autoload_on_startup=true
 [global_group]
 
 player=""
+items="Pick ups for the player"
+mobs="NPCs"
+projectiles=""
+GUI="Group for HUD/UI events"
 
 [input]
 
@@ -132,9 +136,20 @@ weapon_scope={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="NPC"
+3d_physics/layer_4="Player Projectile"
+3d_physics/layer_5="NPC Projectile"
+3d_physics/layer_6="Pickup/Item"
+3d_physics/layer_7="Explosions"
+
 [physics]
 
 3d/physics_engine="JoltPhysics3D"
+jolt_3d/collisions/areas_detect_static_bodies=true
 
 [rendering]
 
