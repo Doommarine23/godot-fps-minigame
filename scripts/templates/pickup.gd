@@ -3,6 +3,7 @@ class_name Pickup
 
 @export_subgroup("Model & Sound")
 @export var name: String = "Item" #Meant for player in-game
+@export var pickup_message: String = "Picked up a: " + str(name) #message for HUD TODO: connect it and add better logic later
 @export var name_editor: String = "Pickup_" #Meant for the editor
 @export var model: PackedScene
 @export var position: Vector3
@@ -15,14 +16,8 @@ class_name Pickup
 @export var drop_weapon: bool
 @export var drop_health: bool
 
-#@export var drop_: bool
-#@export var drop_: bool
-#@export var pickup_id: int # what pickup
-
-
 @export_subgroup("Ammo")
 @export_enum("ammo_clip", "ammo_shell") var ammo_type: String = "ammo_clip"
-#@export var ammo_id: (int, "Pistol", "Shotgun", "Rifle")
 @export var ammo_amount: int
 
 @export_subgroup("Weapon")
