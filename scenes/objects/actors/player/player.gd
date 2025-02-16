@@ -57,7 +57,6 @@ var ammo_icons: Dictionary = {
 #region Signals
 signal pickup_detected
 signal ammo_updated
-signal health_updated
 #endregion
 
 # FUNCTIONS
@@ -155,9 +154,7 @@ func handle_controls(_delta):
 	
 	rotation_target -= Vector3(-rotation_input.y, -rotation_input.x, 0).limit_length(1.0) * gamepad_sensitivity
 	rotation_target.x = clamp(rotation_target.x, deg_to_rad(-90), deg_to_rad(90))
-	
-
-	
+		
 	# Jumping
 	
 	if Input.is_action_just_pressed("jump"):
@@ -208,7 +205,10 @@ func health_manager(value : int, is_damage : bool):
 	else:
 		health += value
 	
-	health_updated.emit(health) # Update health on HUD
+	if health > max_health:
+		health = max_health
+	
+	get_tree().call_group("GUI", "update_health", health)
 	
 	if health < 0:
 		get_tree().reload_current_scene() # Reset when out of health
@@ -247,8 +247,7 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			
 	if is_health:
 		if health < max_health:
-			health += pickup_data.health_amount
-			health_updated.emit(health) #TODO: Replace with manager later
+			health_manager(pickup_data.health_amount, false)
 			accepted_pickup = true
 			
 	if is_weapon:
@@ -265,7 +264,8 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			#TODO: Change weapon to new pickup ID. Need to get its position in the weapon array.
 			#initiate_change_weapon(pickup_data.weapon_id)
 			accepted_pickup = true
-			print("gave weapon with ID of: " + str(pickup_data.weapon_id))
+			get_tree().call_group("GUI", "update_pickup_box", pickup_data.name)
+			print("Gave Weapon Pickup of Name: " + str(pickup_data.name))
 			
 	if accepted_pickup:
 		pickup_actor.emit_signal("pickup_finish")

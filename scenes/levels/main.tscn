@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dxvvlck8lej3f"]
+[gd_scene load_steps=17 format=3 uid="uid://dxvvlck8lej3f"]
 
 [ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/levels/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://scenes/objects/actors/player/player.tscn" id="2_elriq"]
@@ -21,6 +21,10 @@ font_size = 36
 outline_size = 12
 outline_color = Color(0, 0, 0, 0.470588)
 
+[sub_resource type="Theme" id="Theme_jpm0o"]
+default_font = ExtResource("3_w27de")
+default_font_size = 32
+
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -33,7 +37,7 @@ transform = Transform3D(-0.422618, -0.694272, 0.582563, 0, 0.642788, 0.766044, -
 shadow_enabled = true
 shadow_opacity = 0.75
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." groups=["GUI"]]
 script = ExtResource("3_s8mkj")
 
 [node name="Crosshair" type="TextureRect" parent="HUD"]
@@ -69,6 +73,29 @@ size_flags_vertical = 8
 text = "100%"
 label_settings = SubResource("LabelSettings_fpmwk")
 vertical_alignment = 2
+
+[node name="ItemList" type="ItemList" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -448.0
+offset_top = 152.0
+offset_right = 448.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_jpm0o")
+allow_search = false
+max_text_lines = 4
+auto_height = true
+text_overrun_behavior = 4
+
+[node name="lifeTimer" type="Timer" parent="HUD/ItemList"]
+wait_time = 2.0
+autostart = true
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -176,4 +203,4 @@ pickup_data = ExtResource("12_s3cf1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77808, 1.53465, 4.19683)
 pickup_data = ExtResource("14_188md")
 
-[connection signal="health_updated" from="Player" to="HUD" method="_on_health_updated"]
+[connection signal="timeout" from="HUD/ItemList/lifeTimer" to="HUD" method="_on_life_timer_timeout"]

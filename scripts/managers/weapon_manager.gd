@@ -1,25 +1,21 @@
 ##Originally inside player.gd. Controls which weapon resource is loaded and actually attacks with them.
 
-extends Node
-
-@export_subgroup("Weapons")
-@export var weapons: Array[Weapon] = []
+extends Node3D
 
 @onready var player: CharacterBody3D = $"../../../../../.."
 @onready var blaster_cooldown = $"../../../../../../Cooldown"
 @onready var raycast = $"../../../../RayCast"
 @onready var muzzle = $"../Muzzle"
 @onready var camera = $"../../../.."
-@onready var crosshair: TextureRect = $"../CenterContainer/TextureRect"
-#TODO: Crosshair is still wonky :(
 
+@export_subgroup("Weapons")
+@export var weapons: Array[Weapon] = []
+
+var weapon_model = null
 var tween:Tween
-
 var weapon: Weapon
 var weapon_index := 0
-
 var is_scoped: bool = false
-
 var container_offset = Vector3(1.2, -1.1, -2.75)
 
 # Called when the node enters the scene tree for the first time.
@@ -36,11 +32,32 @@ func _physics_process(delta: float) -> void:
 	# Weapon switching
 	action_weapon_toggle()
 
+func fire_projectile():
+	var proj
+	match weapon.primary_projectile:
+		"proj_rocket":
+			proj = weapon.projectile.instantiate()
+			print("Weapon Model: " + str(weapon_model))
+			#for child in weapon_model.find_children("*", "RayCast3D"):
+				#print("child: " + str(child))
+				#proj.transform = child.global_transform
+				#proj.position = child.global_position# * player.global_position
+				#proj.transform.basis = child.global_transform.basis#* player.global_transform.basis
+			
+			proj.position = raycast.global_position
+			proj.transform.basis = raycast.global_transform.basis
+			#proj.position.z -= 1
+			#proj.position.x = randf_range(-weapon.spread, weapon.spread)
+			#proj.position.y = randf_range(-weapon.spread, weapon.spread)
+			get_tree().root.add_child(proj)
+		
+		"proj_grenade":
+			print("Two are better than one!")
+
 # Shooting
 func action_shoot():
 	
 	if Input.is_action_pressed("shoot"):
-	
 		if !blaster_cooldown.is_stopped(): return # Cooldown for shooting
 		
 		Audio.play(weapon.sound_shoot)
@@ -55,38 +72,47 @@ func action_shoot():
 		
 		blaster_cooldown.start(weapon.cooldown)
 		
+		#TODO: Burst & Projectile logic
 		# Shoot the weapon, amount based on shot count
-		
-		for n in weapon.shot_count:
-		
-			raycast.target_position.x = randf_range(-weapon.spread, weapon.spread)
-			raycast.target_position.y = randf_range(-weapon.spread, weapon.spread)
+		if weapon.primary_projectile == "proj_hitscan":
+			for n in weapon.shot_count:
 			
-			raycast.force_raycast_update()
+				raycast.target_position.x = randf_range(-weapon.spread, weapon.spread)
+				raycast.target_position.y = randf_range(-weapon.spread, weapon.spread)
+				
+				raycast.force_raycast_update()
+				
+				if !raycast.is_colliding(): continue # Don't create impact when raycast didn't hit
+				
+				var collider = raycast.get_collider()
+				
+				# Hitting an enemy
+				
+				if collider.has_method("damage"):
+					collider.damage(weapon.damage)
+				
+				# Creating an impact animation
+				
+				#TODO: bulletholes
+				var impact = preload("res://scenes/objects/actors/fx/impact.tscn")
+				var impact_instance = impact.instantiate()
+				
+				impact_instance.play("shot")
+				
+				get_tree().root.add_child(impact_instance)
+				
+				impact_instance.position = raycast.get_collision_point() + (raycast.get_collision_normal() / 10)
+				impact_instance.look_at(camera.global_transform.origin, Vector3.UP, true)
+		else:
+			fire_projectile()
 			
-			if !raycast.is_colliding(): continue # Don't create impact when raycast didn't hit
-			
-			var collider = raycast.get_collider()
-			
-			# Hitting an enemy
-			
-			if collider.has_method("damage"):
-				collider.damage(weapon.damage)
-			
-			# Creating an impact animation
-			
-			var impact = preload("res://scenes/objects/actors/fx/impact.tscn")
-			var impact_instance = impact.instantiate()
-			
-			impact_instance.play("shot")
-			
-			get_tree().root.add_child(impact_instance)
-			
-			impact_instance.position = raycast.get_collision_point() + (raycast.get_collision_normal() / 10)
-			impact_instance.look_at(camera.global_transform.origin, Vector3.UP, true)
-		
+		#TODO: a way cooler system that uses the weapon's damage and clamping.
 		self.position.z += 0.25 # Knockback of weapon visual
+		self.position.x += randf_range(-0.10, 0.10)
+		self.position.y -= 0.1
+		
 		camera.rotation.x += 0.025 # Knockback of camera
+		camera.rotation.z += randf_range(-0.025, 0.025) # Left/Right Bob
 		player.movement_velocity += Vector3(0, 0, weapon.knockback) # Knockback
 		#NOTE: Fix movement, it isn't working :(
 
@@ -147,26 +173,27 @@ func action_shoot_secondary():
 			player.movement_velocity += Vector3(0, 0, weapon.knockback_secondary) # Knockback
 			#NOTE: Fix movement, it isn't working :(
 
+#TODO: Could probably simplify a bit.
 # Scope or Irons
 #TODO: Change player mouse speed and joystick speed based on FOV.
 func action_scope(force_unzoom : bool):
-	if force_unzoom:
-		print("forced unzoom!")
+	if force_unzoom && is_scoped:
+		self.visible = true
+		Audio.play("sounds/actors/fx/minimize_003.ogg")
 		camera.set_fov(player.default_fov)
 		is_scoped = false
 	else:
 		if Input.is_action_just_pressed("weapon_scope"):
 			if is_scoped:
-				print("unzoom!")
+				self.visible = true
 				Audio.play("sounds/actors/fx/minimize_003.ogg")
 				camera.set_fov(player.default_fov)
-				is_scoped = !is_scoped
+				is_scoped = false
 			else:
-				print("zoom!")
+				self.visible = false
 				Audio.play("sounds/actors/fx/maximize_003.ogg")
-				is_scoped = !is_scoped
+				is_scoped = true
 				camera.set_fov(weapon.scope_fov)
-			pass
 	
 # Toggle between available weapons (listed in 'weapons')
 #TODO: Probably replace with an addon for a weapon wheel or something better.
@@ -205,7 +232,7 @@ func change_weapon():
 		self.remove_child(n)
 	
 	# Step 2. Place new weapon model in container
-	var weapon_model = weapon.model.instantiate()
+	weapon_model = weapon.model.instantiate()
 	self.add_child(weapon_model)
 	
 	weapon_model.position = weapon.position
@@ -217,5 +244,5 @@ func change_weapon():
 		
 	# Set weapon data
 	raycast.target_position = Vector3(0, 0, -1) * weapon.max_distance
-	crosshair.texture = weapon.crosshair
+	get_tree().call_group("GUI", "update_crosshair", weapon.crosshair)
 	
