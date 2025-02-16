@@ -8,10 +8,12 @@ class_name Weapon
 @export var muzzle_position: Vector3  # On-screen position of muzzle flash
 
 @export_subgroup("General Properties")
+@export var has_secondary_attack: bool # If has secondary fire
 @export_range(25, 70) var scope_fov: float = 65
 @export var sound_shoot: String  # Sound path
 @export var sound_shoot_secondary: String  # Sound path
 @export var crosshair: Texture2D  # Image of crosshair on-screen
+@export var inventory_icon: Texture2D # 2D image of the weapon for HUD / UI.
 
 @export_subgroup("Primary Properties")
 @export_range(0.1, 1) var cooldown: float = 0.1  # Firerate

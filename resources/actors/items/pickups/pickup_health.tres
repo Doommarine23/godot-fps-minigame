@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="Pickup" load_steps=3 format=3 uid="uid://cey8dp1ytn2an"]
 
-[ext_resource type="PackedScene" uid="uid://dd3oln1ucgqpd" path="res://models/blaster-repeater.glb" id="1_3mnrj"]
+[ext_resource type="PackedScene" uid="uid://g2w2608bc2dy" path="res://models/cloud.glb" id="1_pp2vo"]
 [ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_o8b63"]
 
 [resource]
 script = ExtResource("2_o8b63")
 name = "Item"
 name_editor = "Pickup_Health"
-model = ExtResource("1_3mnrj")
+model = ExtResource("1_pp2vo")
 position = Vector3(0, 0, 0)
 rotation = Vector3(0, 0, 0)
 scale = Vector3(0.5, 0.5, 0.5)
-sound_pickup = ""
+sound_pickup = "sounds/actors/fx/confirmation_002.ogg"
 drop_ammo = false
 drop_weapon = false
 drop_health = true

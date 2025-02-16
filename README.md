@@ -6,6 +6,8 @@ This is a basic but strong foundation to make a FPS game in Godot. Meant to be e
 
 Based on Kenney's Starter Kit as a foundation with extensive tweaking for more complex features and better scaling.
 
+Fairly minimal project ATM, no scene manager, signal bus, etc.
+
 Just download and go. Sorry no documentation right now.
 
 Custom art assets not included at this time.
@@ -27,6 +29,16 @@ Author: Kenney
 Title: Starter Kit FPS
 Link: https://github.com/KenneyNL/Starter-Kit-FPS
 Usage: Entire project launched from his FPS starterkit, thank you!
+
+Author: Kenney
+Title: Blaster Kit
+Link: https://kenney.nl/assets/blaster-kit
+Usage: Various 3D/2D assets used for weapons
+
+Author: Kenney
+Title: Interface Sounds
+Link: https://kenney.nl/assets/interface-sounds
+Usage: Various Audio assets used
 
 Author: Hanprogramer
 Title: Input is lagging #14 (Starter Kit FPS Issue)
