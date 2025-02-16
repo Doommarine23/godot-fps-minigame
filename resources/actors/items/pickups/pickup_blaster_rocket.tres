@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("2_qxdir")
-name = "Item"
+name = "Rocket Launcher"
 name_editor = "Pickup_Blaster_Rocket"
 model = ExtResource("1_wxt8r")
 position = Vector3(0, 0, 0)

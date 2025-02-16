@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfhxbljw1vnx"]
+
+[ext_resource type="PackedScene" uid="uid://cmbe5k43v3ai6" path="res://models/blasterO.glb" id="1_vht0o"]
+
+[node name="blasterO2" instance=ExtResource("1_vht0o")]
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 1.03167)

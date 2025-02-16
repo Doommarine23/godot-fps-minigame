@@ -1,31 +1,46 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://dfb7jqvr7glto"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://dfb7jqvr7glto"]
 
 [ext_resource type="Texture2D" uid="uid://ce3lgq7foiusl" path="res://sprites/crosshair-repeater.png" id="1_4on3l"]
 [ext_resource type="Texture2D" uid="uid://cpxour8a7ihec" path="res://icon.png" id="2_p3gv1"]
-[ext_resource type="PackedScene" uid="uid://cmbe5k43v3ai6" path="res://models/blasterO.glb" id="3_xhtcc"]
+[ext_resource type="PackedScene" uid="uid://cfhxbljw1vnx" path="res://scenes/objects/actors/player/weapons/blaster_rocket.tscn" id="3_bmw8a"]
 [ext_resource type="Script" path="res://scripts/templates/weapon.gd" id="4_3a46u"]
+[ext_resource type="PackedScene" uid="uid://7l58ujb2sful" path="res://scenes/objects/actors/projectiles/proj_base.tscn" id="4_34igr"]
 
 [resource]
 script = ExtResource("4_3a46u")
-model = ExtResource("3_xhtcc")
+model = ExtResource("3_bmw8a")
 position = Vector3(0, 0, 0)
 rotation = Vector3(0, 180, 0)
 muzzle_position = Vector3(0.1, -0.4, 1.5)
-has_secondary_attack = true
-scope_fov = 65.0
-sound_shoot = "sounds/actors/player/weapons/blaster_repeater.ogg"
-sound_shoot_secondary = "sounds/actors/player/weapons/blaster_repeater.ogg"
 crosshair = ExtResource("1_4on3l")
 inventory_icon = ExtResource("2_p3gv1")
+sound_shoot = "sounds/actors/player/weapons/blaster_repeater.ogg"
+sound_shoot_secondary = "sounds/actors/player/weapons/blaster_repeater.ogg"
+weapon_name = "Rocket"
+primary_is_burst_fire = false
+secondary_is_burst_fire = false
+has_secondary_attack = true
+scope_fov = 65.0
+projectile = ExtResource("4_34igr")
+primary_projectile = "proj_rocket"
+secondary_projectile = "proj_rocket"
+primary_ammo_type = "ammo_clip"
+primary_ammo_consumption = 1
+secondary_ammo_type = "ammo_clip"
+secondary_ammo_consumption = 1
 cooldown = 0.5
 max_distance = 20
 damage = 25.0
 spread = 0.2
 shot_count = 1
 knockback = 7
+primary_burst_count = 2
+primary_burst_cooldown = 0.1
 cooldown_secondary = 1.0
 max_distance_secondary = 20
 damage_secondary = 20.0
 spread_secondary = 1.0
 shot_count_secondary = 4
 knockback_secondary = 20
+secondary_burst_count = 2
+secondary_burst_cooldown = 0.1

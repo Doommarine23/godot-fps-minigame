@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("2_jccbc")
-name = "Item"
+name = "Sniper Rifle"
 name_editor = "Pickup_Blaster_Sniper"
 model = ExtResource("1_0o28w")
 position = Vector3(0, 0, 0)
