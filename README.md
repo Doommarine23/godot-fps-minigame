@@ -69,3 +69,13 @@ Author: athousandships (Post on thread by danndamann)
 Title: How to make RigidBody3D move forwards based on it’s orientation?
 Link: https://forum.godotengine.org/t/how-to-make-rigidbody3d-move-forwards-based-on-its-orientation/65449
 Usage: Transform math for 3D projectile direction. Thank you athous, and thank you dannd for asking!
+
+Author: Bitlytic
+Title: How You Can Easily Make Your Code Simpler in Godot 4
+Link: https://www.youtube.com/watch?v=74y6zWZfQKk
+
+Author: Firebelley Games
+Title: Using Composition to Make More Scalable Games in Godot
+Link: https://www.youtube.com/watch?v=rCu8vQrdDDI
+
+Usage: Both of these together were used as a refresher on the importance and usage of components for breaking code into logical chunks.
