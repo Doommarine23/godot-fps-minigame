@@ -2,8 +2,8 @@
 
 extends Node3D
 
-@onready var player: CharacterBody3D = $"../../../../../.."
-@onready var blaster_cooldown: Timer = $"../../../../../../Cooldown"
+@onready var player: CharacterBody3D = $"../../../../../../.."
+@onready var blaster_cooldown: Timer = $"../../../../../../../Cooldown"
 @onready var raycast: RayCast3D = $"../../../../RayCast"
 @onready var secondary_ray: RayCast3D = $"../../../../Secondary_Attack_Ray"
 @onready var projectile_ray: RayCast3D = $"../../../../Projectile_Ray"
@@ -46,7 +46,6 @@ func fire_projectile():
 				#proj.transform = child.global_transform
 				#proj.position = child.global_position# * player.global_position
 				#proj.transform.basis = child.global_transform.basis#* player.global_transform.basis
-			
 			#TODO: Follow Chaff Games' guide on raycast so they come from center of screen.
 			proj.position = projectile_ray.global_position
 			proj.transform.basis = projectile_ray.global_transform.basis
@@ -77,6 +76,7 @@ func action_shoot():
 		blaster_cooldown.start(weapon.cooldown)
 		
 		#TODO: Burst & Projectile logic
+		#TODO: Separate the actual firing logic into its own function.
 		# Shoot the weapon, amount based on shot count
 		if weapon.primary_projectile == "proj_hitscan":
 			for n in weapon.shot_count:
@@ -180,7 +180,7 @@ func action_shoot_secondary():
 
 #TODO: Could probably simplify a bit.
 # Scope or Irons
-#TODO: Change player mouse speed and joystick speed based on FOV.
+#TODO: Change player mouse speed and joystick speed based on FOV. Need a good formula!
 func action_scope(force_unzoom : bool):
 	if force_unzoom && is_scoped:
 		self.visible = true
@@ -210,6 +210,8 @@ func action_weapon_toggle():
 	if Input.is_action_just_pressed("weapon_toggle_back"):
 		weapon_index = wrap(weapon_index - 1, 0, weapons.size())
 
+	#This runs all the time but never changes unless we press the change buttons
+	#Should probably fix it but eh. I guess later TODO
 	if weapon_index != old_weapon_index:
 		action_scope(true)
 		Audio.play("sounds/actors/player/weapons/weapon_change.ogg")
@@ -227,6 +229,8 @@ func initiate_change_weapon(index):
 
 # Switches the weapon model (off-screen)
 func change_weapon():
+	
+	#TODO: Implement a simple state system so weapons cannot fire until drawn fully.
 	
 	weapon = weapons[weapon_index]
 	# Step 1. Remove previous weapon model(s) from container
