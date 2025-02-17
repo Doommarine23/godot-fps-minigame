@@ -3,7 +3,7 @@ class_name Pickup
 
 @export_subgroup("Model & Sound")
 @export var name: String = "Item" #Meant for player in-game
-@export var pickup_message: String = "Picked up a: " + str(name) #message for HUD TODO: connect it and add better logic later
+#@export var pickup_message: String = "Picked up a:"#message for HUD TODO: connect it and add better logic later
 @export var name_editor: String = "Pickup_" #Meant for the editor
 @export var model: PackedScene
 @export var position: Vector3

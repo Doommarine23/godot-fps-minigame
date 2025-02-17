@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("2_o8b63")
 name = "Item"
+pickup_message = ""
 name_editor = "Pickup_Health"
 model = ExtResource("1_pp2vo")
 position = Vector3(0, 0, 0)

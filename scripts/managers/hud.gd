@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+var tween:Tween
+
 #NOTE: Relies on being inside the Global group of GUI to get event calls from other actors.
 
 #Call from player to update the health
@@ -11,13 +13,20 @@ func update_health(health):
 #Display when we pick up items.
 func update_pickup_box(item):
 	$ItemList.add_item("You Got: " + str(item) )
-	$ItemList.visible = true
+	tween = get_tree().create_tween()
+	tween.set_ease(Tween.EASE_OUT_IN)
+	tween.tween_property($ItemList, "modulate:a", 1.0, 0.1)
 	$ItemList/lifeTimer.start(2.0)
 
 #Turn off the message box and clear it
 func _on_life_timer_timeout() -> void:
-	$ItemList.visible = false
-	$ItemList.clear()
+	tween = get_tree().create_tween()
+	tween.set_ease(Tween.EASE_OUT_IN)
+	tween.tween_property($ItemList, "modulate:a", 0.0, 0.1)
+	tween.tween_callback($ItemList.clear)
+	
+func update_weapon_bar(weapon):
+	pass
 
 #Weapons calls to update the crosshair
 func update_crosshair(crosshair_texture):

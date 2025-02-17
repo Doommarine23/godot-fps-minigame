@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://dxvvlck8lej3f"]
+[gd_scene load_steps=19 format=3 uid="uid://dxvvlck8lej3f"]
 
 [ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/levels/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://scenes/objects/actors/player/player.tscn" id="2_elriq"]
 [ext_resource type="Script" path="res://scripts/managers/hud.gd" id="3_s8mkj"]
 [ext_resource type="FontFile" uid="uid://biqtga8moh7ah" path="res://fonts/lilita_one_regular.ttf" id="3_w27de"]
 [ext_resource type="PackedScene" uid="uid://dpm3l05d7fu35" path="res://scenes/objects/actors/props/platform.tscn" id="5_3s40e"]
+[ext_resource type="Texture2D" uid="uid://dk40apg7fg8r0" path="res://sprites/gui/blasterE.png" id="5_6q5xi"]
 [ext_resource type="PackedScene" uid="uid://r7rt7pth4u7o" path="res://scenes/objects/actors/props/wall_low.tscn" id="5_6vel1"]
 [ext_resource type="PackedScene" uid="uid://c71evdjblk5wp" path="res://scenes/objects/actors/props/wall_high.tscn" id="7_cabne"]
 [ext_resource type="PackedScene" uid="uid://bvx5cvigosg0s" path="res://scenes/objects/actors/props/platform_large_grass.tscn" id="7_wggef"]
@@ -14,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://cey8dp1ytn2an" path="res://resources/actors/items/pickups/pickup_health.tres" id="12_s3cf1"]
 [ext_resource type="Resource" uid="uid://rkgv7qvc52ad" path="res://resources/actors/items/pickups/pickup_blaster_sniper.tres" id="13_lc2tl"]
 [ext_resource type="Resource" uid="uid://l7e10lcvgoci" path="res://resources/actors/items/pickups/pickup_blaster_rocket.tres" id="14_188md"]
+[ext_resource type="Resource" uid="uid://dtybhpoaocsq8" path="res://resources/actors/items/pickups/pickup_blaster_rifle.tres" id="16_8q20i"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fpmwk"]
 font = ExtResource("3_w27de")
@@ -75,6 +77,7 @@ label_settings = SubResource("LabelSettings_fpmwk")
 vertical_alignment = 2
 
 [node name="ItemList" type="ItemList" parent="HUD"]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -96,6 +99,28 @@ text_overrun_behavior = 4
 [node name="lifeTimer" type="Timer" parent="HUD/ItemList"]
 wait_time = 2.0
 autostart = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HUD"]
+visible = false
+offset_right = 268.0
+offset_bottom = 64.0
+scale = Vector2(2, 2)
+
+[node name="TextureRect" type="TextureRect" parent="HUD/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_6q5xi")
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_6q5xi")
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_6q5xi")
+
+[node name="TextureRect4" type="TextureRect" parent="HUD/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_6q5xi")
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -192,7 +217,7 @@ transform = Transform3D(1.73205, 0, 1, 0, 2, 0, -1, 0, 1.73205, -30.1261, 2.4268
 transform = Transform3D(1.12202, 1.39419, -2.40776, 1.53922, 1.85165, 1.78946, 2.31773, -1.90463, -0.0227883, -0.881504, 13.0297, -30.1859)
 
 [node name="Pickup_Blaster_Sniper" parent="." instance=ExtResource("11_8k62g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.64586, 0.482962, -1.66972)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.63011, 0.482962, -1.66972)
 pickup_data = ExtResource("13_lc2tl")
 
 [node name="Pickup_Health" parent="." instance=ExtResource("11_8k62g")]
@@ -202,5 +227,9 @@ pickup_data = ExtResource("12_s3cf1")
 [node name="Pickup_Blaster_Rocket" parent="." instance=ExtResource("11_8k62g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77808, 1.53465, 4.19683)
 pickup_data = ExtResource("14_188md")
+
+[node name="Pickup_Auto_Rifle" parent="." instance=ExtResource("11_8k62g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.497828, 0.426821, 1.79847)
+pickup_data = ExtResource("16_8q20i")
 
 [connection signal="timeout" from="HUD/ItemList/lifeTimer" to="HUD" method="_on_life_timer_timeout"]

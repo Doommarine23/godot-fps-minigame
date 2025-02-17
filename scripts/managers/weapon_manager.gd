@@ -3,8 +3,11 @@
 extends Node3D
 
 @onready var player: CharacterBody3D = $"../../../../../.."
-@onready var blaster_cooldown = $"../../../../../../Cooldown"
-@onready var raycast = $"../../../../RayCast"
+@onready var blaster_cooldown: Timer = $"../../../../../../Cooldown"
+@onready var raycast: RayCast3D = $"../../../../RayCast"
+@onready var secondary_ray: RayCast3D = $"../../../../Secondary_Attack_Ray"
+@onready var projectile_ray: RayCast3D = $"../../../../Projectile_Ray"
+
 @onready var muzzle = $"../Muzzle"
 @onready var camera = $"../../../.."
 
@@ -44,8 +47,9 @@ func fire_projectile():
 				#proj.position = child.global_position# * player.global_position
 				#proj.transform.basis = child.global_transform.basis#* player.global_transform.basis
 			
-			proj.position = raycast.global_position
-			proj.transform.basis = raycast.global_transform.basis
+			#TODO: Follow Chaff Games' guide on raycast so they come from center of screen.
+			proj.position = projectile_ray.global_position
+			proj.transform.basis = projectile_ray.global_transform.basis
 			#proj.position.z -= 1
 			#proj.position.x = randf_range(-weapon.spread, weapon.spread)
 			#proj.position.y = randf_range(-weapon.spread, weapon.spread)
@@ -63,12 +67,12 @@ func action_shoot():
 		Audio.play(weapon.sound_shoot)
 		
 		# Set muzzle flash position, play animation
-		
-		muzzle.play("default")
-		
-		muzzle.rotation_degrees.z = randf_range(-45, 45)
-		muzzle.scale = Vector3.ONE * randf_range(0.40, 0.75)
-		muzzle.position = self.position - weapon.muzzle_position
+		if !is_scoped:
+			muzzle.play("default")
+			
+			muzzle.rotation_degrees.z = randf_range(-45, 45)
+			muzzle.scale = Vector3.ONE * randf_range(0.40, 0.75)
+			muzzle.position = self.position - weapon.muzzle_position
 		
 		blaster_cooldown.start(weapon.cooldown)
 		
@@ -111,6 +115,7 @@ func action_shoot():
 		self.position.x += randf_range(-0.10, 0.10)
 		self.position.y -= 0.1
 		
+		#TODO: true recoil e.g. kicks your view up and you must control it.
 		camera.rotation.x += 0.025 # Knockback of camera
 		camera.rotation.z += randf_range(-0.025, 0.025) # Left/Right Bob
 		player.movement_velocity += Vector3(0, 0, weapon.knockback) # Knockback
@@ -142,14 +147,14 @@ func action_shoot_secondary():
 			
 			for n in weapon.shot_count_secondary:
 			
-				raycast.target_position.x = randf_range(-weapon.spread_secondary, weapon.spread_secondary)
-				raycast.target_position.y = randf_range(-weapon.spread_secondary, weapon.spread_secondary)
+				secondary_ray.target_position.x = randf_range(-weapon.spread_secondary, weapon.spread_secondary)
+				secondary_ray.target_position.y = randf_range(-weapon.spread_secondary, weapon.spread_secondary)
 				
-				raycast.force_raycast_update()
+				secondary_ray.force_raycast_update()
 				
-				if !raycast.is_colliding(): continue # Don't create impact when raycast didn't hit
+				if !secondary_ray.is_colliding(): continue # Don't create impact when raycast didn't hit
 				
-				var collider = raycast.get_collider()
+				var collider = secondary_ray.get_collider()
 				
 				# Hitting an enemy
 				
@@ -165,7 +170,7 @@ func action_shoot_secondary():
 				
 				get_tree().root.add_child(impact_instance)
 				
-				impact_instance.position = raycast.get_collision_point() + (raycast.get_collision_normal() / 10)
+				impact_instance.position = secondary_ray.get_collision_point() + (secondary_ray.get_collision_normal() / 10)
 				impact_instance.look_at(camera.global_transform.origin, Vector3.UP, true)
 			
 			self.position.z += 0.25 # Knockback of weapon visual
@@ -198,20 +203,17 @@ func action_scope(force_unzoom : bool):
 # Toggle between available weapons (listed in 'weapons')
 #TODO: Probably replace with an addon for a weapon wheel or something better.
 func action_weapon_toggle():
-	
+	var old_weapon_index = weapon_index
 	if Input.is_action_just_pressed("weapon_toggle"):
-		
 		weapon_index = wrap(weapon_index + 1, 0, weapons.size())
-		initiate_change_weapon(weapon_index)
-		action_scope(true)
-		Audio.play("sounds/actors/player/weapons/weapon_change.ogg")
 	
 	if Input.is_action_just_pressed("weapon_toggle_back"):
-		
 		weapon_index = wrap(weapon_index - 1, 0, weapons.size())
-		initiate_change_weapon(weapon_index)
+
+	if weapon_index != old_weapon_index:
 		action_scope(true)
 		Audio.play("sounds/actors/player/weapons/weapon_change.ogg")
+		initiate_change_weapon(weapon_index)
 
 # Initiates the weapon changing animation (tween)
 func initiate_change_weapon(index):
@@ -243,6 +245,12 @@ func change_weapon():
 		child.layers = 2
 		
 	# Set weapon data
+	
+	#TODO: Maybe a whole raycast grabbing system that grabs from the weapon resource. 
+	#would be good for shells, muzzles, and specific spray pattern weapons
 	raycast.target_position = Vector3(0, 0, -1) * weapon.max_distance
+	secondary_ray.target_position = Vector3(0, 0, -1) * weapon.max_distance_secondary
+	projectile_ray.target_position = Vector3(0, 0, -1) * weapon.max_distance 
+	#max_distance should affect the life and speed of a rocket imo
 	get_tree().call_group("GUI", "update_crosshair", weapon.crosshair)
 	
