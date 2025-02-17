@@ -43,6 +43,7 @@ items="Pick ups for the player"
 mobs="NPCs"
 projectiles=""
 GUI="Group for HUD/UI events"
+friendly_npc=""
 
 [input]
 

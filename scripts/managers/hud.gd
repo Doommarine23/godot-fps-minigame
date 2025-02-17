@@ -7,6 +7,7 @@ var tween:Tween
 #Call from player to update the health
 func update_health(health):
 	$HBoxContainer/Health.text = str(health) + "%"
+	$ProgressBar.value = health
 
 #TODO: This needs to be completely replaced with some kind of message array.
 
@@ -31,3 +32,9 @@ func update_weapon_bar(weapon):
 #Weapons calls to update the crosshair
 func update_crosshair(crosshair_texture):
 	$Crosshair.texture = crosshair_texture
+
+func update_crosshair_color(ray_collision):
+	if ray_collision:
+		$Crosshair.set_modulate(Color(1,0,0,1))
+	else:
+		$Crosshair.set_modulate(Color(1,1,1,1))

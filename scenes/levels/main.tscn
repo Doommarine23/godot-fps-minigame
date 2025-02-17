@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dxvvlck8lej3f"]
+[gd_scene load_steps=21 format=3 uid="uid://dxvvlck8lej3f"]
 
 [ext_resource type="Environment" uid="uid://jvmpkdwaeaq" path="res://scenes/levels/main-environment.tres" id="1_q8fpv"]
 [ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://scenes/objects/actors/player/player.tscn" id="2_elriq"]
@@ -27,13 +27,37 @@ outline_color = Color(0, 0, 0, 0.470588)
 default_font = ExtResource("3_w27de")
 default_font_size = 32
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yulu4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icofb"]
+bg_color = Color(0, 1, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 2
+
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_q8fpv")
 
 [node name="Player" parent="." instance=ExtResource("2_elriq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.80354, 3.33557, -22.091)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.679779, 3.1839, -0.485521)
 MAX_STEP_UP = 0.6
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
@@ -60,6 +84,7 @@ scale = Vector2(0.35, 0.35)
 pivot_offset = Vector2(64, 64)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
+visible = false
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -124,23 +149,38 @@ texture = ExtResource("5_6q5xi")
 layout_mode = 2
 texture = ExtResource("5_6q5xi")
 
+[node name="ProgressBar" type="ProgressBar" parent="HUD"]
+anchors_preset = -1
+anchor_left = 0.031
+anchor_top = 0.922
+anchor_right = 0.231
+anchor_bottom = 0.96
+offset_left = 0.32
+offset_top = 0.159973
+offset_right = 0.320007
+offset_bottom = -0.200012
+grow_vertical = 0
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_w27de")
+theme_override_styles/background = SubResource("StyleBoxFlat_yulu4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_icofb")
+value = 100.0
+rounded = true
+show_percentage = false
+
 [node name="Enemies" type="Node" parent="."]
 
-[node name="enemy-flying" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
+[node name="enemy-flying" parent="Enemies" instance=ExtResource("8_7ty2f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2.5, -6)
-player = NodePath("../../Player")
 
-[node name="enemy-flying2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
+[node name="enemy-flying2" parent="Enemies" instance=ExtResource("8_7ty2f")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.5, 2.5, 1.5)
-player = NodePath("../../Player")
 
-[node name="enemy-flying3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
+[node name="enemy-flying3" parent="Enemies" instance=ExtResource("8_7ty2f")]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 5.5, 3.5, 9)
-player = NodePath("../../Player")
 
-[node name="enemy-flying4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("8_7ty2f")]
+[node name="enemy-flying4" parent="Enemies" instance=ExtResource("8_7ty2f")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 15.5, 4, -7.5)
-player = NodePath("../../Player")
 
 [node name="Level" type="Node" parent="."]
 
@@ -242,6 +282,10 @@ size = Vector3(17.481, 1, 26.4033)
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.387406, 0.212392, -7.75522)
 size = Vector3(1.34668, 1, 6.7319)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.387406, 8.71019, -22.7262)
+size = Vector3(8.37646, 17.9956, 6.7319)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.387406, 0.448374, -8.99894)

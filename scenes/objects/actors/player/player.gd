@@ -1,5 +1,6 @@
 #TODO: Type all variables. Better sanity / safety and slightly better performance.
 extends CharacterBody3D
+class_name DM23Player
 
 #region Node References
 @onready var camera = $Neck/Head/Camera
@@ -16,9 +17,8 @@ extends CharacterBody3D
 @export_subgroup("Properties")
 @export var movement_speed = 5
 @export var jump_strength = 8
-@export var max_health:int = 100
+@export  var health_component: HealthComponent
 
-var health:int = 100
 var gravity:float = 0.0
 var movement_velocity: Vector3
 var rotation_target: Vector3
@@ -173,8 +173,7 @@ func _physics_process(delta):
 	if position.y < -10:
 		get_tree().reload_current_scene()
 
-#STAIRS
-
+#region Stair Logic
 # Function: Handle walking down stairs
 func stair_step_down():
 	if is_grounded:
@@ -308,8 +307,7 @@ func smooth_camera_jitter(delta):
 	head.global_position.y = clampf(head.global_position.y,
 										-neck.global_position.y - 1,
 										neck.global_position.y + 1)
-
-
+#endregion
 
 func _input(event):
 	if event is InputEventMouseMotion and mouse_captured:
@@ -388,24 +386,6 @@ func action_jump():
 	jump_single = false;
 	#jump_double = true;
 
-# Add or Remove Health from Actor
-func health_manager(value : int, is_damage : bool):
-	#Could I somehow do this on the input field? Either way, ensure health value is always a positive.
-	abs(value)
-	
-	if is_damage:
-		health -= value
-	else:
-		health += value
-	
-	if health > max_health:
-		health = max_health
-	
-	get_tree().call_group("GUI", "update_health", health)
-	
-	if health < 0:
-		get_tree().reload_current_scene() # Reset when out of health
-
 # Manage Ammo
 func calculate_ammo(ammo_id, ammo_amount):
 	if ammo_types.has(ammo_id):
@@ -439,8 +419,8 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			accepted_pickup = true
 			
 	if is_health:
-		if health < max_health:
-			health_manager(pickup_data.health_amount, false)
+		if health_component.health < health_component.max_health:
+			health_component.give_health(pickup_data.health_amount)
 			accepted_pickup = true
 			
 	if is_weapon:

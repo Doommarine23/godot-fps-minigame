@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dl2ed4gkybggf"]
+[gd_scene load_steps=10 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scenes/objects/actors/player/player.gd" id="1_ffboj"]
 [ext_resource type="Texture2D" uid="uid://8ggihh27mlrr" path="res://sprites/blob_shadow.png" id="2_b0fo8"]
@@ -7,36 +7,31 @@
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="4_m6ukc"]
 [ext_resource type="Script" path="res://scripts/managers/weapon_manager.gd" id="6_450qp"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/actors/player/movement/walking.ogg" id="8_0iptv"]
-[ext_resource type="Script" path="res://scenes/components/health_component.gd" id="8_ffnhu"]
-[ext_resource type="PackedScene" uid="uid://i44sew7s2rc3" path="res://scenes/components/hit_component.tscn" id="9_nnpch"]
+[ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="8_m723x"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gdq8c"]
 radius = 0.3
 height = 1.0
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("health_component") groups=["player"]]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 2
 collision_mask = 53
 script = ExtResource("1_ffboj")
-health_component = NodePath("HealthComponent")
-MAX_STEP_UP = 1.0
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 shape = SubResource("CapsuleShape3D_gdq8c")
 
-[node name="Neck" type="Node3D" parent="."]
+[node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Head" type="Node3D" parent="Neck"]
-
-[node name="Camera" type="Camera3D" parent="Neck/Head"]
+[node name="Camera" type="Camera3D" parent="Head"]
 cull_mask = 1048573
 current = true
 fov = 80.0
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Neck/Head/Camera"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Head/Camera"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,46 +39,63 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="Neck/Head/Camera/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Head/Camera/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
 msaa_3d = 1
 size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
-[node name="CameraItem" type="Camera3D" parent="Neck/Head/Camera/SubViewportContainer/SubViewport"]
+[node name="CameraItem" type="Camera3D" parent="Head/Camera/SubViewportContainer/SubViewport"]
 cull_mask = 1047554
-current = true
 fov = 40.0
 
-[node name="Container" type="Node3D" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
+[node name="Container" type="Node3D" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -1, -2.25)
 script = ExtResource("6_450qp")
 weapons = Array[ExtResource("2_ym3mk")]([ExtResource("3_kr4p8")])
 
-[node name="Muzzle" type="AnimatedSprite3D" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
+[node name="Muzzle" type="AnimatedSprite3D" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -0.75, -6)
 layers = 2
 sprite_frames = ExtResource("4_m6ukc")
 frame = 2
 
-[node name="RayCast" type="RayCast3D" parent="Neck/Head/Camera"]
+[node name="CenterContainer" type="CenterContainer" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem"]
 visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+use_top_left = true
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Head/Camera/SubViewportContainer/SubViewport/CameraItem/CenterContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 1.05
+texture = ExtResource("8_m723x")
+stretch_mode = 3
+
+[node name="RayCast" type="RayCast3D" parent="Head/Camera"]
 exclude_parent = false
 target_position = Vector3(0, 0, -10)
 collision_mask = 5
 collide_with_areas = true
 
-[node name="Projectile_Ray" type="RayCast3D" parent="Neck/Head/Camera"]
+[node name="Projectile_Ray" type="RayCast3D" parent="Head/Camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.206987, -0.212868, 0)
-visible = false
 exclude_parent = false
 target_position = Vector3(0, 0, -10)
 collision_mask = 5
 collide_with_areas = true
 
-[node name="Secondary_Attack_Ray" type="RayCast3D" parent="Neck/Head/Camera"]
-visible = false
+[node name="Secondary_Attack_Ray" type="RayCast3D" parent="Head/Camera"]
 exclude_parent = false
 target_position = Vector3(0, 0, -10)
 collision_mask = 5
@@ -103,17 +115,5 @@ autoplay = true
 
 [node name="Cooldown" type="Timer" parent="."]
 one_shot = true
-
-[node name="HealthComponent" type="Node" parent="."]
-script = ExtResource("8_ffnhu")
-
-[node name="HitComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("9_nnpch")]
-collision_layer = 2
-collision_mask = 16
-health_component = NodePath("../HealthComponent")
-
-[node name="HitCollider" type="CollisionShape3D" parent="HitComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
-shape = SubResource("CapsuleShape3D_gdq8c")
 
 [connection signal="pickup_detected" from="." to="." method="_on_pickup_detected"]

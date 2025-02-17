@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://464ifpeam01"]
+
+[ext_resource type="Script" path="res://scenes/components/sentry_component.gd" id="1_x7cbd"]
+
+[node name="SentryComponent" type="Area3D"]
+script = ExtResource("1_x7cbd")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

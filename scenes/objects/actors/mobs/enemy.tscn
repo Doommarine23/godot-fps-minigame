@@ -1,26 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2g78tpqbyf5g"]
+[gd_scene load_steps=8 format=3 uid="uid://d2g78tpqbyf5g"]
 
 [ext_resource type="PackedScene" uid="uid://lde2xq3vq635" path="res://models/enemy-flying.glb" id="1_3v8nl"]
-[ext_resource type="Script" path="res://scenes/objects/actors/mobs/enemy.gd" id="1_jg24b"]
+[ext_resource type="Script" path="res://scenes/components/health_component.gd" id="3_18fu1"]
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="3_iblw5"]
+[ext_resource type="PackedScene" uid="uid://i44sew7s2rc3" path="res://scenes/components/hit_component.tscn" id="4_mtgyk"]
+[ext_resource type="PackedScene" uid="uid://464ifpeam01" path="res://scenes/components/sentry_component.tscn" id="5_jcqwv"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_iix87"]
 radius = 0.75
 
-[node name="enemy-flying" type="Area3D" groups=["mobs"]]
-collision_layer = 4
-collision_mask = 15
-script = ExtResource("1_jg24b")
+[sub_resource type="SphereShape3D" id="SphereShape3D_83ix4"]
+radius = 3.655
 
-[node name="enemy-flying" parent="." instance=ExtResource("1_3v8nl")]
+[node name="Node3D" type="Node3D"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("SphereShape3D_iix87")
+[node name="enemy-flying2" parent="." instance=ExtResource("1_3v8nl")]
 
 [node name="RayCast" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, 5)
 collision_mask = 3
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="MuzzleA" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.45, 0.3, 0.4)
@@ -36,4 +36,26 @@ frame = 2
 wait_time = 0.25
 autostart = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_18fu1")
+
+[node name="HitComponent" parent="." node_paths=PackedStringArray("health_component") groups=["mobs"] instance=ExtResource("4_mtgyk")]
+collision_layer = 4
+collision_mask = 15
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("SphereShape3D_iix87")
+
+[node name="SentryComponent" parent="." node_paths=PackedStringArray("gun_cooldown", "parent_npc", "raycast") instance=ExtResource("5_jcqwv")]
+collision_layer = 0
+collision_mask = 2
+gun_cooldown = NodePath("../Timer")
+parent_npc = NodePath("..")
+raycast = NodePath("../RayCast")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="SentryComponent"]
+shape = SubResource("SphereShape3D_83ix4")
+
+[connection signal="timeout" from="Timer" to="SentryComponent" method="_on_timer_timeout"]

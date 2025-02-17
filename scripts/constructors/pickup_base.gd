@@ -1,5 +1,6 @@
 @tool
 extends Node3D
+class_name PickUpBase
 
 @export var pickup_data : Pickup
 

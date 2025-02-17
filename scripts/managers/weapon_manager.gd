@@ -26,15 +26,33 @@ func _ready() -> void:
 	weapon = weapons[weapon_index] # Weapon must never be nil TODO: Add a "no weapons" weapon ala Halo.
 	initiate_change_weapon(weapon_index)
 
-#May seem unnessary but we do move the player around so it is better to be in physics
+#TODO: Should I split this stuff up more? Probably.
 func _physics_process(delta: float) -> void:
-	# Shooting
+	# Shooting & Zoom
 	action_shoot()
 	action_shoot_secondary()
 	action_scope(false)
 	# Weapon switching
 	action_weapon_toggle()
+	# Crosshair Color
+	crosshair_awareness()
 
+#Color Crosshair Red ala Halo
+func crosshair_awareness():
+	var active_ray = null
+	
+	if raycast.is_colliding():
+		active_ray = raycast
+	elif secondary_ray.is_colliding():
+		active_ray = secondary_ray
+		
+	if active_ray != null:
+		var collider = active_ray.get_collider()
+		if collider != null && collider.is_in_group("mobs"):
+			get_tree().call_group("GUI", "update_crosshair_color", true)
+	else:
+		get_tree().call_group("GUI", "update_crosshair_color", false)
+		
 func fire_projectile():
 	var proj
 	match weapon.primary_projectile:
@@ -56,6 +74,10 @@ func fire_projectile():
 		
 		"proj_grenade":
 			print("Two are better than one!")
+
+
+func fire_hitscan():
+	pass
 
 # Shooting
 func action_shoot():
@@ -92,8 +114,8 @@ func action_shoot():
 				
 				# Hitting an enemy
 				
-				if collider.has_method("damage"):
-					collider.damage(weapon.damage)
+				if collider is HitBoxComponent:
+					collider.give_damage(weapon.damage)
 				
 				# Creating an impact animation
 				
@@ -158,8 +180,8 @@ func action_shoot_secondary():
 				
 				# Hitting an enemy
 				
-				if collider.has_method("damage"):
-					collider.damage(weapon.damage_secondary)
+				if collider is HitBoxComponent:
+					collider.give_damage(weapon.damage_secondary)
 				
 				# Creating an impact animation
 				
