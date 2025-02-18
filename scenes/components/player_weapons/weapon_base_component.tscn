@@ -4,3 +4,7 @@
 
 [node name="WeaponBaseComponent" type="Node3D"]
 script = ExtResource("1_jw2cg")
+
+[node name="sfx_weapon_fire" type="AudioStreamPlayer" parent="."]
+
+[node name="sfx_weapon_foley" type="AudioStreamPlayer" parent="."]

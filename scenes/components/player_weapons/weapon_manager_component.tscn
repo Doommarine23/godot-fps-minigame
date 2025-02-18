@@ -5,4 +5,4 @@
 [node name="WeaponManagerComponent" type="Node3D"]
 script = ExtResource("1_bu4c7")
 
-[node name="SoundFX" type="AudioStreamPlayer3D" parent="."]
+[node name="SoundFX" type="AudioStreamPlayer" parent="."]

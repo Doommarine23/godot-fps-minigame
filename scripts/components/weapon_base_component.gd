@@ -7,6 +7,8 @@ class_name WeaponBaseComponent
 @export var weapon_manager: WeaponManagerComponent
 @export var blaster_cooldown: Timer
 @export var muzzle: AnimatedSprite3D
+@onready var sfx_weapon_fire: AudioStreamPlayer = $sfx_weapon_fire
+@onready var sfx_weapon_foley: AudioStreamPlayer = $sfx_weapon_foley
 
 #I feel this is probably clunky and not very elegant but it works for storing all the weapon stats, which are used in the attack function and means I don't need -
 # - To have a "secondary attack" func, reducing reptition.
@@ -53,7 +55,8 @@ func action_prepare_shoot():
 
 # Shooting
 func action_shoot(secondary_attack: bool, chosen_stats: Dictionary):
-	#Audio.play(chosen_stats.get("shoot sound"))
+	sfx_weapon_fire.set_stream(load(chosen_stats.get("shoot sound")))
+	sfx_weapon_fire.play()
 	blaster_cooldown.start(chosen_stats.get("cooldown"))
 	# Set muzzle flash position, play animation
 	#TODO: check if this weapon should be hidden when zoomed vs not.
@@ -126,9 +129,10 @@ func fire_hitscan(chosen_stats: Dictionary, use_secondary_ray: bool):
 		
 		get_tree().root.add_child(impact_instance)
 		
+		#TODO: Impact should be its own scene so it can do cool stuff like play audio
 		impact_instance.position = chosen_ray.get_collision_point() + (chosen_ray.get_collision_normal() / 10)
 		impact_instance.look_at(weapon_manager.player.camera.global_transform.origin, Vector3.UP, true)
-		#Audio.play("sounds/actors/fx/maximize_003.ogg")
+
 
 # Scope or Irons
 func action_scope(force_unzoom : bool):
@@ -136,19 +140,22 @@ func action_scope(force_unzoom : bool):
 #TODO: Change player mouse speed and joystick speed based on FOV. Need a good formula!
 	if force_unzoom && is_scoped:
 		self.visible = true
-		#Audio.play("sounds/actors/fx/minimize_003.ogg")
+		sfx_weapon_foley.set_stream(load("sounds/actors/fx/minimize_003.ogg"))
+		sfx_weapon_foley.play()
 		weapon_manager.player.camera.set_fov(weapon_manager.player.default_fov)
 		is_scoped = false
 	else:
 		if Input.is_action_just_pressed("weapon_scope"):
 			if is_scoped:
 				self.visible = true
-				#Audio.play("sounds/actors/fx/minimize_003.ogg")
+				sfx_weapon_foley.set_stream(load("sounds/actors/fx/minimize_003.ogg"))
+				sfx_weapon_foley.play()
 				weapon_manager.player.camera.set_fov(weapon_manager.player.default_fov)
 				is_scoped = false
 			else:
 				self.visible = false
-				#Audio.play("sounds/actors/fx/maximize_003.ogg")
+				sfx_weapon_foley.set_stream(load("sounds/actors/fx/maximize_003.ogg"))
+				sfx_weapon_foley.play()
 				is_scoped = true
 				weapon_manager.player.camera.set_fov(weapon_manager.scope_fov)
 #endregion

@@ -1,12 +1,12 @@
 [gd_scene load_steps=13 format=3 uid="uid://dl2ed4gkybggf"]
 
 [ext_resource type="Script" path="res://scenes/objects/actors/player/player.gd" id="1_ffboj"]
+[ext_resource type="PackedScene" uid="uid://kdllovxoq1qf" path="res://scenes/components/player_weapons/weapon_manager_component.tscn" id="2_2q7fx"]
 [ext_resource type="Texture2D" uid="uid://8ggihh27mlrr" path="res://sprites/blob_shadow.png" id="2_b0fo8"]
-[ext_resource type="Script" path="res://scripts/components/weapon_manager_component.gd" id="2_rol8q"]
 [ext_resource type="Script" path="res://scripts/templates/weapon.gd" id="2_ym3mk"]
-[ext_resource type="Resource" uid="uid://c56y8pqoyk15f" path="res://resources/actors/player/weapons/blaster_shotgun.tres" id="3_kr4p8"]
+[ext_resource type="PackedScene" uid="uid://c1kn42efg8dfy" path="res://scenes/components/player_weapons/weapon_base_component.tscn" id="3_0itjg"]
 [ext_resource type="SpriteFrames" uid="uid://dbv3sy5qjatnl" path="res://sprites/burst_animation.tres" id="4_m6ukc"]
-[ext_resource type="Script" path="res://scripts/components/weapon_base_component.gd" id="5_ugewk"]
+[ext_resource type="Resource" uid="uid://cu2gtxlcmbb34" path="res://resources/actors/player/weapons/blaster_repeater.tres" id="5_f8ohn"]
 [ext_resource type="AudioStream" uid="uid://cydjn1ct3hps2" path="res://sounds/actors/player/movement/walking.ogg" id="8_0iptv"]
 [ext_resource type="Script" path="res://scenes/components/health_component.gd" id="8_ffnhu"]
 [ext_resource type="PackedScene" uid="uid://i44sew7s2rc3" path="res://scenes/components/hit_component.tscn" id="9_nnpch"]
@@ -62,18 +62,15 @@ cull_mask = 1047554
 current = true
 fov = 40.0
 
-[node name="WeaponManagerComponent" type="Node3D" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem" node_paths=PackedStringArray("player", "weapon_component", "primary_raycast", "secondary_raycast", "projectile_raycast")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -1, -2.25)
-script = ExtResource("2_rol8q")
+[node name="WeaponManagerComponent" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem" node_paths=PackedStringArray("player", "weapon_component", "primary_raycast", "secondary_raycast", "projectile_raycast") instance=ExtResource("2_2q7fx")]
 player = NodePath("../../../../../../..")
 weapon_component = NodePath("WeaponBaseComponent")
 primary_raycast = NodePath("../../../../Primary_Attack_Ray")
 secondary_raycast = NodePath("../../../../Secondary_Attack_Ray")
 projectile_raycast = NodePath("../../../../Projectile_Attack_Ray")
-weapons = Array[ExtResource("2_ym3mk")]([ExtResource("3_kr4p8")])
+weapons = Array[ExtResource("2_ym3mk")]([ExtResource("5_f8ohn")])
 
-[node name="WeaponBaseComponent" type="Node3D" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem/WeaponManagerComponent" node_paths=PackedStringArray("weapon_manager", "blaster_cooldown", "muzzle")]
-script = ExtResource("5_ugewk")
+[node name="WeaponBaseComponent" parent="Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem/WeaponManagerComponent" node_paths=PackedStringArray("weapon_manager", "blaster_cooldown", "muzzle") instance=ExtResource("3_0itjg")]
 weapon_manager = NodePath("..")
 blaster_cooldown = NodePath("../../../../../../../../Cooldown")
 muzzle = NodePath("../../Muzzle")
@@ -131,7 +128,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 shape = SubResource("CapsuleShape3D_gdq8c")
 
 [node name="FootSteps" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("8_0iptv")
 
 [node name="Jump&Land" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("11_m34tt")

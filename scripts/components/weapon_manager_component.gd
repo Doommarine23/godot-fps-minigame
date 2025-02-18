@@ -8,7 +8,7 @@ class_name WeaponManagerComponent
 @export var player: DM23Player
 @export var weapon_component: WeaponBaseComponent
 
-@onready var soundFX: AudioStreamPlayer3D = $SoundFX
+@onready var soundFX: AudioStreamPlayer = $SoundFX
 
 @export var primary_raycast: RayCast3D
 @export var secondary_raycast: RayCast3D
@@ -82,6 +82,9 @@ func change_weapon():
 	weapon_component.add_child(weapon_component.weapon_model)
 	weapon_component.position = weapon.position
 	weapon_component.rotation_degrees = weapon.rotation
+	weapon_component.add_child(weapon_component.sfx_weapon_fire) #It doesn't add its own child I don't understand???
+	weapon_component.add_child(weapon_component.sfx_weapon_foley) #It doesn't add its own child I don't understand???
+	#weapon_component.audio_stream_player_3d.position = weapon_component.position
 	
 	#weapon_component.weapon_model.layers = 2
 	# Step 3. Set model to only render on layer 2 (the weapon camera)

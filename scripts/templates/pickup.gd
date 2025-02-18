@@ -22,7 +22,7 @@ class_name Pickup
 
 @export_subgroup("Weapon")
 @export var weapon_id: Weapon  # Sound path
-@export var weapon_pickup_ammo: int #If this is a weapon pickup, this will be used to give free ammo of the ammo_type value.
-
+#@export var weapon_pickup_primary_ammo: int #If this is a weapon pickup, this will be used to give free ammo of the ammo_type value.
+#@export var weapon_pickup_secondary_ammo: int
 @export_subgroup("Health")
 @export var health_amount: int

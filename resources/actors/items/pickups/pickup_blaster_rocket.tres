@@ -19,5 +19,4 @@ drop_health = false
 ammo_type = "ammo_clip"
 ammo_amount = 0
 weapon_id = ExtResource("3_nfck4")
-weapon_pickup_ammo = 0
 health_amount = 0

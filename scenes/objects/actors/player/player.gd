@@ -431,12 +431,15 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			
 	if is_weapon:
 		if weapon_manager.weapons.has(pickup_data.weapon_id): #If we already own this weapon
+			pass
 			#If we have less than maximum ammo, of the ammo type defined for this pickup's ammo type.
-				if self.ammo_types.get(pickup_data.ammo_type) < ammo_types_max.get(pickup_data.weapon_id.ammo_type):
-					calculate_ammo(pickup_data.ammo_type, pickup_data.weapon_pickup_ammo)
-					accepted_pickup = true
-				else:
-					print("YOU GET NOTHING. GOOD DAY SIR.")
+				#TODO: Consider Primary and Secondary Ammo, and think-through the organization better.
+				
+				#if self.ammo_types.get(pickup_data.ammo_type) < ammo_types_max.get(pickup_data.weapon_id.ammo_type):
+					#calculate_ammo(pickup_data.ammo_type, pickup_data.weapon_pickup_ammo)
+					#accepted_pickup = true
+				#else:
+					#print("YOU GET NOTHING. GOOD DAY SIR.")
 					
 		else: #All good to give weapon pickup proper
 			weapon_manager.weapons.append(pickup_data.weapon_id)
