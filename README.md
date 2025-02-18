@@ -77,5 +77,9 @@ Link: https://www.youtube.com/watch?v=74y6zWZfQKk
 Author: Firebelley Games
 Title: Using Composition to Make More Scalable Games in Godot
 Link: https://www.youtube.com/watch?v=rCu8vQrdDDI
-
 Usage: Both of these together were used as a refresher on the importance and usage of components for breaking code into logical chunks.
+
+Author: Peter DV (OrigamiDev-Pete) & Numerous Contributors
+Title: TODO Manager
+Link: https://github.com/OrigamiDev-Pete/TODO_Manager
+Usage: Amazing Addon for tracking endless TODO statements
