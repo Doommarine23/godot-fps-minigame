@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node3D) -> void:
 	has_target = body
 
-func _on_body_exited(body: Node3D) -> void:
+func _on_body_exited(_body: Node3D) -> void:
 	has_target = null
 
 func _on_timer_timeout() -> void:
@@ -49,4 +49,4 @@ func _on_timer_timeout() -> void:
 				muzzle_b.play("default")
 				muzzle_b.rotation_degrees.z = randf_range(-45, 45)
 
-				Audio.play("sounds/actors/mobs/enemy_attack.ogg")
+				#Audio.play("sounds/actors/mobs/enemy_attack.ogg")

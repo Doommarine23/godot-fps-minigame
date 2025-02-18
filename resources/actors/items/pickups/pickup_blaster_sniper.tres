@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dq3oqgkt7o41n" path="res://models/blasterE.glb" id="1_0o28w"]
 [ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_jccbc"]
-[ext_resource type="Resource" uid="uid://dvkwuko88f10" path="res://resources/actors/player/weapons/blaster-sniper.tres" id="3_iuagc"]
+[ext_resource type="Resource" uid="uid://dvkwuko88f10" path="res://resources/actors/player/weapons/blaster_sniper.tres" id="3_iuagc"]
 
 [resource]
 script = ExtResource("2_jccbc")

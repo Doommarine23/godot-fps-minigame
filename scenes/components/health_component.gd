@@ -5,10 +5,6 @@ class_name HealthComponent
 
 var health: int
 
-signal is_player_damaged
-
-signal update_health
-
 func _ready() -> void:
 	health = max_health
 	

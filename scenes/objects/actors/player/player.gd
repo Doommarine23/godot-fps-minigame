@@ -4,12 +4,14 @@ class_name DM23Player
 
 #region Node References
 @onready var camera = $Neck/Head/Camera
-@onready var container = $Neck/Head/Camera/SubViewportContainer/SubViewport/CameraItem/Container
 @onready var sound_footsteps = $SoundFootsteps
 
 @onready var neck: Node3D = $Neck
 @onready var head: Node3D = $Neck/Head
 
+@export var footsteps: AudioStreamPlayer3D
+@export var jump_or_land: AudioStreamPlayer3D
+@export var misc_sound: AudioStreamPlayer3D
 
 #endregion
 
@@ -17,7 +19,8 @@ class_name DM23Player
 @export_subgroup("Properties")
 @export var movement_speed = 5
 @export var jump_strength = 8
-@export  var health_component: HealthComponent
+@export var health_component: HealthComponent
+@export var weapon_manager: WeaponManagerComponent
 
 var gravity:float = 0.0
 var movement_velocity: Vector3
@@ -147,7 +150,7 @@ func _physics_process(delta):
 	
 	#Weapon Container Rotation
 	
-	container.position = lerp(container.position, container.container_offset - (basis.inverse() * applied_velocity / 30), delta * 10)
+	weapon_manager.position = lerp(weapon_manager.position, weapon_manager.container_offset - (basis.inverse() * applied_velocity / 30), delta * 10)
 	
 	# Movement sound
 	
@@ -163,7 +166,9 @@ func _physics_process(delta):
 	
 	#TODO: Velocity minimum for landing sound.
 	if is_on_floor() and gravity > 1 and !previously_floored: # Landed
-		Audio.play("sounds/actors/player/movement/land.ogg")
+		
+		jump_or_land.set_stream( load("sounds/actors/player/movement/land.ogg") )
+		jump_or_land.play()
 		camera.position.y = -0.1
 	
 	previously_floored = is_on_floor()
@@ -318,7 +323,7 @@ func _input(event):
 		rotation_target.x -= event.relative.y / mouse_sensitivity
 
 # Handle Mouse Control
-func handle_mouse_controls(delta):
+func handle_mouse_controls(_delta):
 	# Mouse Capture
 	if Input.is_action_just_pressed("mouse_capture"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -356,7 +361,8 @@ func handle_controls(_delta):
 		]
 		
 		if jump_single or jump_double:
-			Audio.play(jump_sound.pick_random())
+			jump_or_land.set_stream( load(jump_sound.pick_random()) )
+			jump_or_land.play()
 			
 		#if jump_double:
 			#
@@ -398,8 +404,8 @@ func calculate_ammo(ammo_id, ammo_amount):
 		ammo_types[ammo_id] = ammo_types_max[ammo_id]
 	
 	#If our current weapon happens to use null ammo, avoid updating HUD until next time.
-	if container.weapon.ammo_type != "ammo_null": 
-		ammo_updated.emit(ammo_types.get(container.weapon.ammo_type))
+	if weapon_manager.weapon.ammo_type != "ammo_null": 
+		ammo_updated.emit(ammo_types.get(weapon_manager.weapon.ammo_type))
 	print( "Ammo is now: " + str( ammo_types.get(ammo_id) ) )
 
 # Detect item pickups and act accordingly
@@ -424,7 +430,7 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			accepted_pickup = true
 			
 	if is_weapon:
-		if container.weapons.has(pickup_data.weapon_id): #If we already own this weapon
+		if weapon_manager.weapons.has(pickup_data.weapon_id): #If we already own this weapon
 			#If we have less than maximum ammo, of the ammo type defined for this pickup's ammo type.
 				if self.ammo_types.get(pickup_data.ammo_type) < ammo_types_max.get(pickup_data.weapon_id.ammo_type):
 					calculate_ammo(pickup_data.ammo_type, pickup_data.weapon_pickup_ammo)
@@ -433,7 +439,7 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 					print("YOU GET NOTHING. GOOD DAY SIR.")
 					
 		else: #All good to give weapon pickup proper
-			container.weapons.append(pickup_data.weapon_id)
+			weapon_manager.weapons.append(pickup_data.weapon_id)
 			#TODO: Change weapon to new pickup ID. Need to get its position in the weapon array.
 			#initiate_change_weapon(pickup_data.weapon_id)
 			accepted_pickup = true
@@ -442,4 +448,5 @@ func _on_pickup_detected(pickup_actor, pickup_data):
 			
 	if accepted_pickup:
 		pickup_actor.emit_signal("pickup_finish")
-		Audio.play(pickup_data.sound_pickup)
+		misc_sound.set_stream( load(pickup_data.sound_pickup) )
+		misc_sound.play()

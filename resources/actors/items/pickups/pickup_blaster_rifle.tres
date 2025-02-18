@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ld8ejm246fa4" path="res://models/blasterD.glb" id="1_a2fwt"]
 [ext_resource type="Script" path="res://scripts/templates/pickup.gd" id="2_6lxw3"]
-[ext_resource type="Resource" uid="uid://cu2gtxlcmbb34" path="res://resources/actors/player/weapons/blaster-repeater.tres" id="3_c2p77"]
+[ext_resource type="Resource" uid="uid://cu2gtxlcmbb34" path="res://resources/actors/player/weapons/blaster_repeater.tres" id="3_c2p77"]
 
 [resource]
 script = ExtResource("2_6lxw3")

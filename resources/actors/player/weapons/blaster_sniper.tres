@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://dvkwuko88f10"]
+
+[ext_resource type="Texture2D" uid="uid://2jld33y6h5pq" path="res://sprites/crosshair.png" id="1_ye3xq"]
+[ext_resource type="PackedScene" uid="uid://dq3oqgkt7o41n" path="res://models/blasterE.glb" id="2_er8b6"]
+[ext_resource type="Script" path="res://scripts/templates/weapon.gd" id="3_wejbv"]
+
+[resource]
+script = ExtResource("3_wejbv")
+model = ExtResource("2_er8b6")
+position = Vector3(0, 0, -1)
+rotation = Vector3(0, 180, 0)
+muzzle_position = Vector3(0.1, -0.2, 4)
+crosshair = ExtResource("1_ye3xq")
+primary_sound_shoot = "sounds/actors/player/weapons/blaster.ogg"
+secondary_sound_shoot = ""
+weapon_name = "Sniper"
+primary_is_semiauto = false
+secondary_is_semiauto = false
+primary_is_charge = false
+secondary_is_charge = false
+primary_is_burst_fire = false
+secondary_is_burst_fire = false
+has_secondary_attack = false
+scope_fov = 25.0
+primary_projectile = "proj_hitscan"
+secondary_projectile = "proj_hitscan"
+primary_ammo_type = "ammo_clip"
+primary_ammo_consumption = 1
+secondary_ammo_type = "ammo_clip"
+secondary_ammo_consumption = 1
+primary_cooldown = 1.0
+primary_max_distance = 20
+primary_damage = 50.0
+primary_spread = 0.0
+primary_shot_count = 1
+primary_knockback = 20
+primary_burst_count = 2
+primary_burst_cooldown = 0.1
+secondary_cooldown = 0.1
+secondary_max_distance = 10
+secondary_damage = 25.0
+secondary_spread = 0.0
+secondary_shot_count = 1
+secondary_knockback = 20
+secondary_burst_count = 2
+secondary_burst_cooldown = 0.1
