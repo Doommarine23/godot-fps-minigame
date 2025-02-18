@@ -52,7 +52,7 @@ var wish_dir := Vector3.ZERO			# Player input (WASD) direction
 #endregion
 
 #region Player Ammo Pools
-#TODO: Once supported, made into INT typed.
+#TODO: Once supported, make into INT typed.
 #TODO: new manager node?
 var ammo_types: Dictionary = {
 	"ammo_null" : 0, #Melee and the like.

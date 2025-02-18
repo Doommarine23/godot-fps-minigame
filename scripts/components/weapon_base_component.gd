@@ -15,6 +15,7 @@ class_name WeaponBaseComponent
 
 var primary_stats: Dictionary
 var secondary_stats: Dictionary
+var misc_stats: Dictionary
 
 var primary_can_fire = true
 var secondary_can_fire = true
@@ -49,13 +50,13 @@ func action_prepare_shoot():
 		return  # Cooldown for shooting
 	else:
 		if Input.is_action_pressed("shoot"):
-			action_shoot(false, primary_stats)
-		if Input.is_action_pressed("shoot_secondary") && weapon_manager.weapon.has_secondary_attack:
+			action_shoot(false, primary_stats) #TODO: add seoncdary attack to data
+		if Input.is_action_pressed("shoot_secondary") && misc_stats.get("has secondary attack"):
 			action_shoot(true, secondary_stats)
 
 # Shooting
 func action_shoot(secondary_attack: bool, chosen_stats: Dictionary):
-	sfx_weapon_fire.set_stream(load(chosen_stats.get("shoot sound")))
+	sfx_weapon_fire.set_stream(load(chosen_stats.get("attack sound")))
 	sfx_weapon_fire.play()
 	blaster_cooldown.start(chosen_stats.get("cooldown"))
 	# Set muzzle flash position, play animation
@@ -70,7 +71,9 @@ func action_shoot(secondary_attack: bool, chosen_stats: Dictionary):
 	#TODO: Separate the actual firing logic into its own function.
 	# Shoot the weapon, amount based on shot count
 	
-	if weapon_manager.weapon.primary_projectile == "proj_hitscan": #NOTE: change this later to the chosen stats once projectile logic finalized
+	#TODO: Should more consistently reference the weapon data.
+	#TODO: Consider secondary attack projectiles
+	if !chosen_stats.get("uses projectile"): #NOTE: change this later to the chosen stats once projectile logic finalized
 		fire_hitscan(chosen_stats, secondary_attack)
 	else:
 		fire_projectile(chosen_stats)
@@ -79,23 +82,17 @@ func action_shoot(secondary_attack: bool, chosen_stats: Dictionary):
 #TODO: this code needs serious work later.
 func fire_projectile(chosen_stats: Dictionary):
 	var proj
-	match weapon_manager.weapon.primary_projectile:
-		"proj_rocket":
-			proj = weapon_manager.weapon.projectile.instantiate()
+	proj = chosen_stats.get("projectile scene").instantiate()
+	
+	#TODO: Follow Chaff Games' guide on raycast so they come from center of screen.
+	proj.position = weapon_manager.projectile_raycast.global_position
+	proj.transform.basis = weapon_manager.projectile_raycast.global_transform.basis
+	
+	#TODO: Fix these
+	#proj.position.x = randf_range(-weapon.spread, weapon.spread)
+	#proj.position.y = randf_range(-weapon.spread, weapon.spread)
 			
-			#TODO: Follow Chaff Games' guide on raycast so they come from center of screen.
-			proj.position = weapon_manager.projectile_raycast.global_position
-			proj.transform.basis = weapon_manager.projectile_raycast.global_transform.basis
-			
-			#TODO: Doesn't work.
-			#proj.position.x = randf_range(-weapon.spread, weapon.spread)
-			#proj.position.y = randf_range(-weapon.spread, weapon.spread)
-			
-			get_tree().root.add_child(proj)
-		
-		"proj_grenade":
-			print("Two are better than one!")
-
+	get_tree().root.add_child(proj)
 func fire_hitscan(chosen_stats: Dictionary, use_secondary_ray: bool):
 	#Probably a way cooler way of doing this?
 	var chosen_ray:RayCast3D
@@ -157,7 +154,7 @@ func action_scope(force_unzoom : bool):
 				sfx_weapon_foley.set_stream(load("sounds/actors/fx/maximize_003.ogg"))
 				sfx_weapon_foley.play()
 				is_scoped = true
-				weapon_manager.player.camera.set_fov(weapon_manager.scope_fov)
+				weapon_manager.player.camera.set_fov(misc_stats.get("scope fov"))
 #endregion
 
 #region GUI/UI & Feedback

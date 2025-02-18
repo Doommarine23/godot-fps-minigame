@@ -22,6 +22,7 @@ class_name WeaponManagerComponent
 
 var primary_stats: Dictionary
 var secondary_stats: Dictionary
+var misc_stats: Dictionary
 
 var weapon_model = null
 var tween:Tween
@@ -95,6 +96,7 @@ func change_weapon():
 	load_weapon_data(weapon)
 	weapon_component.primary_stats = primary_stats
 	weapon_component.secondary_stats = secondary_stats
+	weapon_component.misc_stats = misc_stats
 
 func load_weapon_data(current_weapon_data: Weapon):
 	#TODO: Maybe a whole raycast grabbing system that grabs from the weapon resource. 
@@ -104,34 +106,10 @@ func load_weapon_data(current_weapon_data: Weapon):
 	primary_raycast.target_position = Vector3(0, 0, -1) * weapon.primary_max_distance
 	secondary_raycast.target_position = Vector3(0, 0, -1) * weapon.secondary_max_distance
 	projectile_raycast.target_position = Vector3(0, 0, -1) * weapon.primary_max_distance 
-	scope_fov = weapon.scope_fov
+	#scope_fov = weapon.scope_fov
 	
 	#Update Crosshair
 	get_tree().call_group("GUI", "update_crosshair", weapon.crosshair)
-	
-	#Get Weapon Attack Stats
-	primary_stats = {
-	"shoot sound" = current_weapon_data.primary_sound_shoot,
-	"ammo consumption" = current_weapon_data.primary_ammo_consumption,
-	"cooldown" = current_weapon_data.primary_cooldown,
-	"max_distance"= current_weapon_data.primary_max_distance,
-	"damage"= current_weapon_data.primary_damage,
-	"spread"= current_weapon_data.primary_spread,
-	"shot count"= current_weapon_data.primary_shot_count,
-	"knockback"= current_weapon_data.primary_knockback,
-	"burst count"= current_weapon_data.primary_burst_count,
-	"burst cooldown"= current_weapon_data.primary_burst_cooldown
-	}
-
-	secondary_stats = {
-	"shoot sound" = current_weapon_data.secondary_sound_shoot,
-	"ammo consumption" = current_weapon_data.secondary_ammo_consumption,
-	"cooldown" = current_weapon_data.secondary_cooldown,
-	"max_distance"= current_weapon_data.secondary_max_distance,
-	"damage"= current_weapon_data.secondary_damage,
-	"spread"= current_weapon_data.secondary_spread,
-	"shot count"= current_weapon_data.secondary_shot_count,
-	"knockback"= current_weapon_data.secondary_knockback,
-	"burst count"= current_weapon_data.secondary_burst_count,
-	"burst cooldown"= current_weapon_data.secondary_burst_cooldown
-	}
+	primary_stats = weapon.setup_weapon()[0]
+	secondary_stats = weapon.setup_weapon()[1]
+	misc_stats = weapon.setup_weapon()[2]
